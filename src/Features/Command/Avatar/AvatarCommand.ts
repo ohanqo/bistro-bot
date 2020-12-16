@@ -1,10 +1,7 @@
 import { TYPES } from "@/App/AppTypes";
-import { Client, Message } from "discord.js";
+import { Client } from "discord.js";
 import { inject, injectable } from "inversify";
 import AbstractCommand from "../AbstractCommand";
-import fetch from "node-fetch";
-import Constant from "@/Domain/Constant";
-import { Response } from "puppeteer";
 import AvatarErrorHandler from "./AvatarErrorHandler";
 
 @injectable()
