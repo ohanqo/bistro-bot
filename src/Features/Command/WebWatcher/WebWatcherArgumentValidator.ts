@@ -2,6 +2,7 @@ import { TYPES } from "@/App/AppTypes";
 import Validator from "@/Features/Validator/Validator";
 import { Message, MessageEmbed } from "discord.js";
 import { inject, injectable } from "inversify";
+import "@/App/AppCustomProperty";
 
 @injectable()
 export default class WebWatcherArgumentValidator implements Validator {
@@ -27,13 +28,8 @@ export default class WebWatcherArgumentValidator implements Validator {
   }
 
   private validateQuerySelector(): boolean {
-    const querySelector = this.extractInQuoteText(this.content);
+    const querySelector = this.content.inQuoteContent();
     return !!querySelector;
-  }
-
-  private extractInQuoteText(text: string) {
-    const matches = text.match(/"(.*?)"/);
-    return matches ? matches[1] : undefined;
   }
 
   private async sendErrorMessage() {
