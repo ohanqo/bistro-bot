@@ -3,6 +3,7 @@ import { commandModule } from "@/Features/Command/CommandModule";
 import { validatorModule } from "@/Features/Validator/ValidatorModule";
 import { Client, Message } from "discord.js";
 import { Container, injectable } from "inversify";
+import { Browser } from "puppeteer";
 import { AppContainer } from "../AppContainer";
 import AppState from "../AppState";
 import { TYPES } from "../AppTypes";
@@ -12,6 +13,7 @@ export default class MessageScopeBuilder {
   public buildScope(message: Message): Container {
     const state = AppContainer.get<AppState>(TYPES.STATE);
     const client = AppContainer.get<Client>(TYPES.CLIENT);
+    const browser = AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
     const scopedContainer = new Container({ defaultScope: "Singleton" });
 
     scopedContainer.load(domainModule, commandModule, validatorModule);
@@ -24,6 +26,7 @@ export default class MessageScopeBuilder {
     scopedContainer.bind(TYPES.GUILD).toConstantValue(message.guild);
     scopedContainer.bind(TYPES.STATE).toConstantValue(state);
     scopedContainer.bind(TYPES.CLIENT).toConstantValue(client);
+    scopedContainer.bind(TYPES.BROWSER).toConstantValue(browser);
 
     return scopedContainer;
   }

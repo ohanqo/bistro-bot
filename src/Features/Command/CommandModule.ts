@@ -8,6 +8,7 @@ import JailCommand from "./Jail/JailCommand";
 import UnjailCommand from "./Jail/UnjailCommand";
 import WebWatcherArgumentValidator from "./WebWatcher/WebWatcherArgumentValidator";
 import WebWatcherCommand from "./WebWatcher/WebWatcherCommand";
+import WebWatcherIntegrityCheck from "./WebWatcher/WebWatcherIntegrityCheck";
 
 const commandModule = new ContainerModule((bind: interfaces.Bind) => {
   bind(TYPES.COMMAND).to(JailCommand);
@@ -18,6 +19,7 @@ const commandModule = new ContainerModule((bind: interfaces.Bind) => {
   bind(TYPES.COMMAND_FACTORY).to(CommandFactory).inSingletonScope();
   bind(TYPES.AVATAR_ERROR_HANDLER).to(AvatarErrorHandler).inSingletonScope();
   bind(TYPES.WATCHER_ARGS_VALIDATOR).to(WebWatcherArgumentValidator).inSingletonScope();
+  bind(TYPES.WATCHER_INTEGRITY_CHECK).to(WebWatcherIntegrityCheck).inSingletonScope();
 });
 
 export { commandModule };
