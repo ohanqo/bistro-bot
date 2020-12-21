@@ -2,20 +2,20 @@ import { TYPES } from "@/App/AppTypes";
 import { Message } from "discord.js";
 import { inject, injectable } from "inversify";
 import AbstractCommand from "../AbstractCommand";
-import WebWatcherArgumentValidator from "./WebWatcherArgumentValidator";
-import WebWatcherIntegrityCheck from "./WebWatcherIntegrityCheck";
+import WebsiteWatcherArgumentValidator from "./WebsiteWatcherArgumentValidator";
+import WebsiteWatcherIntegrityCheck from "./WebsiteWatcherIntegrityCheck";
 
 @injectable()
-export default class WebWatcherCommand extends AbstractCommand {
+export default class WebsiteWatcherCommand extends AbstractCommand {
   public keyword = "watch";
 
   constructor(
     @inject(TYPES.MESSAGE)
     private message: Message,
     @inject(TYPES.WATCHER_ARGS_VALIDATOR)
-    argsValidator: WebWatcherArgumentValidator,
+    argsValidator: WebsiteWatcherArgumentValidator,
     @inject(TYPES.WATCHER_INTEGRITY_CHECK)
-    private integrityChecker: WebWatcherIntegrityCheck,
+    private integrityChecker: WebsiteWatcherIntegrityCheck,
   ) {
     super();
     this.validators = [argsValidator];
