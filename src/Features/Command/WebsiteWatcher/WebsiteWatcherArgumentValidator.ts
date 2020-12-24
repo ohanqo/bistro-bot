@@ -46,7 +46,11 @@ export default class WebsiteWatcherArgumentValidator implements Validator {
       .addField(
         "Example",
         `${this.prefix}watch https://github.com/ohanqo/bistro-bot/blob/master/docs/CHANGELOG.md "#readme"`,
-      );
+      )
+      .setImage(
+        "https://i.octopus.com/blog/2018-10/selenium/6-finding-elements-by-xpaths-and-css-selectors/image2.png",
+      )
+      .setFooter("Comment trouver le QuerySelector de l'élément survolé");
 
     await this.message.reply(message);
   }

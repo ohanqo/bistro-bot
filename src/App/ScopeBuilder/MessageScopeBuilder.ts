@@ -1,6 +1,7 @@
 import { domainModule } from "@/Domain/DomainModule";
 import { commandModule } from "@/Features/Command/CommandModule";
 import { validatorModule } from "@/Features/Validator/ValidatorModule";
+import { databaseModule } from "@/Features/_shared/DatabaseModule";
 import { Client, Message } from "discord.js";
 import { Container, injectable } from "inversify";
 import { Browser } from "puppeteer";
@@ -10,13 +11,14 @@ import { TYPES } from "../AppTypes";
 
 @injectable()
 export default class MessageScopeBuilder {
-  public buildScope(message: Message): Container {
+  public async buildScope(message: Message): Promise<Container> {
     const state = AppContainer.get<AppState>(TYPES.STATE);
     const client = AppContainer.get<Client>(TYPES.CLIENT);
     const browser = AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
     const scopedContainer = new Container({ defaultScope: "Singleton" });
 
-    scopedContainer.load(domainModule, commandModule, validatorModule);
+    await scopedContainer.loadAsync(databaseModule);
+    scopedContainer.load(domainModule, validatorModule, commandModule);
     scopedContainer.bind(TYPES.PREFIX).toConstantValue(process.env.COMMAND_PREFIX);
     scopedContainer.bind(TYPES.KEYWORD).toConstantValue(this.extractKeyword(message.content));
     scopedContainer.bind(TYPES.MESSAGE).toConstantValue(message);

@@ -10,7 +10,7 @@ import WebsiteWatcherArgumentValidator from "./WebsiteWatcher/WebsiteWatcherArgu
 import WebsiteWatcherCommand from "./WebsiteWatcher/WebsiteWatcherCommand";
 import WebsiteWatcherIntegrityCheck from "./WebsiteWatcher/WebsiteWatcherIntegrityCheck";
 
-const commandModule = new ContainerModule((bind: interfaces.Bind) => {
+const commandModule = new ContainerModule(async (bind: interfaces.Bind) => {
   bind(TYPES.COMMAND).to(JailCommand);
   bind(TYPES.COMMAND).to(UnjailCommand);
   bind(TYPES.COMMAND).to(AvatarCommand);
