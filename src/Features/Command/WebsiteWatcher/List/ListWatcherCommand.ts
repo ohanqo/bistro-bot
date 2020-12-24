@@ -21,8 +21,17 @@ export default class ListWatcherCommand extends AbstractCommand {
   public async execute() {
     const channelId = this.message.channel.id;
     const authorId = this.message.author.id;
-    const records = await this.websiteWatcherRepository.find({ channelId, authorId });
-    const recordsJoined = records.map(({ id, url, querySelector }) => {
+    const watcherList = await this.websiteWatcherRepository.find({ channelId, authorId });
+
+    if (watcherList.length === 0) {
+      await this.message.reply("tu n'as aucun watcher d'enregistré…");
+    } else {
+      await this.sendWatcherListMessage(watcherList);
+    }
+  }
+
+  private async sendWatcherListMessage(watcherList: WebsiteWatcherEntity[]) {
+    const recordsJoined = watcherList.map(({ id, url, querySelector }) => {
       return `ID: ${id} |  URL: <${url}> | QuerySelector: ${querySelector} \n`;
     });
     await this.message.reply(`\n${recordsJoined}`);
