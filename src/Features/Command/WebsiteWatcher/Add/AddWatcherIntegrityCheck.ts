@@ -5,7 +5,7 @@ import "@/App/AppCustomProperty";
 import { Message } from "discord.js";
 
 @injectable()
-export default class WebsiteWatcherIntegrityCheck {
+export default class AddWatcherIntegrityCheck {
   constructor(
     @inject(TYPES.MESSAGE) private message: Message,
     @inject(TYPES.BROWSER) private browser: Promise<Browser>,

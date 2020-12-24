@@ -5,7 +5,7 @@ import { inject, injectable } from "inversify";
 import "@/App/AppCustomProperty";
 
 @injectable()
-export default class WebsiteWatcherArgumentValidator implements Validator {
+export default class AddWatcherArgumentValidator implements Validator {
   constructor(
     @inject(TYPES.PREFIX) private prefix: string,
     @inject(TYPES.MESSAGE) private message: Message,

@@ -16,7 +16,7 @@ export default class WebsiteWatcherScheduler {
   ) {}
 
   public async init() {
-    cron.schedule("*/2 * * * *", () => this.checkWebsiteUpdate());
+    cron.schedule("*/2 * * * *", () => {});
   }
 
   private async checkWebsiteUpdate() {

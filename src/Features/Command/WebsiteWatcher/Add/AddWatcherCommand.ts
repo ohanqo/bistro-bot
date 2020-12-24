@@ -2,22 +2,22 @@ import { TYPES } from "@/App/AppTypes";
 import { Message } from "discord.js";
 import { inject, injectable } from "inversify";
 import { Repository } from "typeorm";
-import AbstractCommand from "../AbstractCommand";
-import WebsiteWatcherArgumentValidator from "./WebsiteWatcherArgumentValidator";
-import WebsiteWatcherEntity from "./WebsiteWatcherEntity";
-import WebsiteWatcherIntegrityCheck from "./WebsiteWatcherIntegrityCheck";
+import AbstractCommand from "../../AbstractCommand";
+import AddWatcherArgumentValidator from "./AddWatcherArgumentValidator";
+import WebsiteWatcherEntity from "../WebsiteWatcherEntity";
+import AddWatcherIntegrityCheck from "./AddWatcherIntegrityCheck";
 
 @injectable()
-export default class WebsiteWatcherCommand extends AbstractCommand {
+export default class AddWatcherCommand extends AbstractCommand {
   public keyword = "watch";
 
   constructor(
     @inject(TYPES.MESSAGE)
     private message: Message,
-    @inject(TYPES.WATCHER_ARGS_VALIDATOR)
-    argsValidator: WebsiteWatcherArgumentValidator,
-    @inject(TYPES.WATCHER_INTEGRITY_CHECK)
-    private integrityChecker: WebsiteWatcherIntegrityCheck,
+    @inject(TYPES.ADD_WATCHER_ARGS_VALIDATOR)
+    argsValidator: AddWatcherArgumentValidator,
+    @inject(TYPES.ADD_WATCHER_INTEGRITY_CHECK)
+    private integrityChecker: AddWatcherIntegrityCheck,
     @inject(TYPES.WEBSITE_WATCHER_REPOSITORY)
     private websiteWatcherRepository: Repository<WebsiteWatcherEntity>,
   ) {

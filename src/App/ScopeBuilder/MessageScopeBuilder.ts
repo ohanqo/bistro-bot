@@ -34,6 +34,6 @@ export default class MessageScopeBuilder {
   }
 
   public extractKeyword(content: string): string {
-    return content.split(" ")[0].slice(1, content.length - 1);
+    return content.split(" ")[0].slice(1, content.length).trimEnd();
   }
 }
