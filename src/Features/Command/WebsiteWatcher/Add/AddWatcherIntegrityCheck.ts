@@ -10,15 +10,14 @@ export default class AddWatcherIntegrityCheck {
   constructor(
     @inject(TYPES.MESSAGE) private message: Message,
     @inject(TYPES.CONSTANT) private constant: Constant,
-    @inject(TYPES.BROWSER) private browser: Promise<Browser>,
+    @inject(TYPES.BROWSER) private browser: Browser,
   ) {}
 
   public async check() {
     const content = this.message.content;
     const url = content.split(" ")[1];
     const querySelector = content.inQuoteContent()?.toString() ?? "";
-    const browser = await this.browser;
-    const page = await browser.newPage();
+    const page = await this.browser.newPage();
     await page.setUserAgent(this.constant.USER_AGENT);
 
     try {

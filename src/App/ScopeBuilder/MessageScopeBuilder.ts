@@ -14,7 +14,7 @@ export default class MessageScopeBuilder {
   public async buildScope(message: Message): Promise<Container> {
     const state = AppContainer.get<AppState>(TYPES.STATE);
     const client = AppContainer.get<Client>(TYPES.CLIENT);
-    const browser = AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
+    const browser = await AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
     const scopedContainer = new Container({ defaultScope: "Singleton" });
 
     await scopedContainer.loadAsync(databaseModule);

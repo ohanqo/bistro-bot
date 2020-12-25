@@ -11,7 +11,7 @@ import { TYPES } from "../AppTypes";
 export default class TaskSchedulerScopeBuilder {
   public async buildScope(): Promise<Container> {
     const client = AppContainer.get<Client>(TYPES.CLIENT);
-    const browser = AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
+    const browser = await AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
     const scopedContainer = new Container({ defaultScope: "Singleton" });
     await scopedContainer.loadAsync(databaseModule);
     scopedContainer.load(domainModule, schedulerModule);

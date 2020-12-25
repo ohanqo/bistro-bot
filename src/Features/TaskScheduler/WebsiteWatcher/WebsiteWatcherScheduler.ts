@@ -12,7 +12,7 @@ export default class WebsiteWatcherScheduler {
   constructor(
     @inject(TYPES.CLIENT) private client: Client,
     @inject(TYPES.CONSTANT) private constant: Constant,
-    @inject(TYPES.BROWSER) private browser: Promise<Browser>,
+    @inject(TYPES.BROWSER) private browser: Browser,
     @inject(TYPES.WEBSITE_WATCHER_REPOSITORY)
     private websiteWatcherRepository: Repository<WebsiteWatcherEntity>,
   ) {}
@@ -23,10 +23,9 @@ export default class WebsiteWatcherScheduler {
 
   private async checkWebsiteUpdate() {
     const records = await this.websiteWatcherRepository.find();
-    const browser = await this.browser;
 
     for (let { id, url, querySelector, outerHTML, guildId, channelId, authorId } of records) {
-      const page = await browser.newPage();
+      const page = await this.browser.newPage();
       await page.setUserAgent(this.constant.USER_AGENT);
       await page.goto(url, { waitUntil: "networkidle0" });
       const currentOuterHTML = await page.evaluate((qs) => {
