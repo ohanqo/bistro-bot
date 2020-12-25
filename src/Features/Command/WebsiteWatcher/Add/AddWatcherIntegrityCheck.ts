@@ -3,11 +3,13 @@ import { inject, injectable } from "inversify";
 import { Browser } from "puppeteer";
 import "@/App/AppCustomProperty";
 import { Message } from "discord.js";
+import Constant from "@/Domain/Constant";
 
 @injectable()
 export default class AddWatcherIntegrityCheck {
   constructor(
     @inject(TYPES.MESSAGE) private message: Message,
+    @inject(TYPES.CONSTANT) private constant: Constant,
     @inject(TYPES.BROWSER) private browser: Promise<Browser>,
   ) {}
 
@@ -17,6 +19,7 @@ export default class AddWatcherIntegrityCheck {
     const querySelector = content.inQuoteContent()?.toString() ?? "";
     const browser = await this.browser;
     const page = await browser.newPage();
+    await page.setUserAgent(this.constant.USER_AGENT);
 
     try {
       await page.goto(url, { waitUntil: "networkidle0" });
@@ -25,11 +28,11 @@ export default class AddWatcherIntegrityCheck {
       }, querySelector);
 
       if (numberOfElements <= 0) {
-        this.message.reply("Aucun élément trouvé sur la page…");
+        await this.message.reply("aucun élément trouvé sur la page…");
         return false;
       } else if (numberOfElements > 1) {
-        this.message.reply(
-          "Il y a trop d'éléments correspondant au queryselector envoyé… Il faut qu'il y ait seulement un seul élément qui soit trouvé.",
+        await this.message.reply(
+          "il y a trop d'éléments correspondant au queryselector envoyé… Il faut qu'il y ait seulement un seul élément qui soit trouvé.",
         );
         return false;
       } else {
@@ -37,7 +40,7 @@ export default class AddWatcherIntegrityCheck {
       }
     } catch (error) {
       console.error(error);
-      this.message.reply("Une erreur est survenue.");
+      this.message.reply("une erreur est survenue.");
       return false;
     } finally {
       await page.close();
