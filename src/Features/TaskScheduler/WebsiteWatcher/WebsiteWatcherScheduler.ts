@@ -28,6 +28,7 @@ export default class WebsiteWatcherScheduler {
       const page = await this.browser.newPage();
       await page.setUserAgent(this.constant.USER_AGENT);
       await page.goto(url, { waitUntil: "networkidle0" });
+      await page.waitForSelector(querySelector, { timeout: 10_000 });
       const currentOuterHTML = await page.evaluate((qs) => {
         return document.querySelector(qs)?.outerHTML ?? "";
       }, querySelector);
