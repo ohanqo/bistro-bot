@@ -6,6 +6,8 @@ import CommandFactory from "./CommandFactory";
 import CommandHandler from "./CommandHandler";
 import JailCommand from "./Jail/JailCommand";
 import UnjailCommand from "./Jail/UnjailCommand";
+import PurgeArgumentValidator from "./Purge/PurgeArgumentValidator";
+import PurgeCommand from "./Purge/PurgeCommand";
 import AddWatcherArgumentValidator from "./WebsiteWatcher/Add/AddWatcherArgumentValidator";
 import AddWatcherCommand from "./WebsiteWatcher/Add/AddWatcherCommand";
 import AddWatcherIntegrityCheck from "./WebsiteWatcher/Add/AddWatcherIntegrityCheck";
@@ -20,12 +22,14 @@ const commandModule = new ContainerModule(async (bind: interfaces.Bind) => {
   bind(TYPES.COMMAND).to(AddWatcherCommand);
   bind(TYPES.COMMAND).to(ListWatcherCommand);
   bind(TYPES.COMMAND).to(DeleteWatcherCommand);
+  bind(TYPES.COMMAND).to(PurgeCommand);
   bind(TYPES.COMMAND_HANDLER).to(CommandHandler).inSingletonScope();
   bind(TYPES.COMMAND_FACTORY).to(CommandFactory).inSingletonScope();
   bind(TYPES.AVATAR_ERROR_HANDLER).to(AvatarErrorHandler).inSingletonScope();
   bind(TYPES.ADD_WATCHER_ARGS_VALIDATOR).to(AddWatcherArgumentValidator).inSingletonScope();
   bind(TYPES.ADD_WATCHER_INTEGRITY_CHECK).to(AddWatcherIntegrityCheck).inSingletonScope();
   bind(TYPES.DELETE_WATCHER_ARGS_VALIDATOR).to(DeleteWatcherArgumentValidator).inSingletonScope();
+  bind(TYPES.PURGE_ARGS_VALIDATOR).to(PurgeArgumentValidator).inSingletonScope();
 });
 
 export { commandModule };
