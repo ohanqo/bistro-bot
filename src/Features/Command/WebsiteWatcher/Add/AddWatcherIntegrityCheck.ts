@@ -1,8 +1,8 @@
 import { TYPES } from "@/App/AppTypes";
 import { inject, injectable } from "inversify";
-import { Browser } from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import "@/App/AppCustomProperty";
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import Constant from "@/Domain/Constant";
 
 @injectable()
@@ -37,10 +37,30 @@ export default class AddWatcherIntegrityCheck {
       }
     } catch (error) {
       console.error(error);
-      this.message.reply("une erreur est survenue. Le queryselector n'est peut être pas correct…");
+      await this.sendErrorMessage(page);
       return false;
     } finally {
       await page.close();
+    }
+  }
+
+  private async sendErrorMessage(page: Page) {
+    try {
+      const screenshot = await page.screenshot();
+
+      const embedded = new MessageEmbed()
+        .setColor("#EF4444")
+        .setTitle("Une erreur est survenue")
+        .setDescription("Le queryselector n'est peut être pas correct…");
+      if (screenshot !== undefined && screenshot !== "") {
+        embedded
+          .attachFiles([{ name: "image.png", attachment: screenshot! }])
+          .setImage("attachment://image.png");
+      }
+
+      await this.message.channel.send(embedded);
+    } catch (error) {
+      await this.message.reply("Une erreur est survenue…");
     }
   }
 }
