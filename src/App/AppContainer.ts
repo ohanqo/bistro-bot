@@ -5,8 +5,11 @@ import AppState from "./AppState";
 import { TYPES } from "./AppTypes";
 import MemberAddScopeBuilder from "./ScopeBuilder/MemberAddScopeBuilder";
 import Constant from "@/Domain/Constant";
-import * as puppeteer from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import TaskSchedulerScopeBuilder from "./ScopeBuilder/TaskSchedulerScopeBuilder";
+
+puppeteer.use(StealthPlugin());
 
 const AppContainer = new Container({ defaultScope: "Singleton" });
 

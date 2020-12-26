@@ -22,14 +22,12 @@ export default class AddWatcherIntegrityCheck {
 
     try {
       await page.goto(url, { waitUntil: "networkidle0" });
+      await page.waitForSelector(querySelector, { timeout: 10_000 });
       const numberOfElements = await page.evaluate((qs) => {
         return document.querySelectorAll(qs).length;
       }, querySelector);
 
-      if (numberOfElements <= 0) {
-        await this.message.reply("aucun élément trouvé sur la page…");
-        return false;
-      } else if (numberOfElements > 1) {
+      if (numberOfElements > 1) {
         await this.message.reply(
           "il y a trop d'éléments correspondant au queryselector envoyé… Il faut qu'il y ait seulement un seul élément qui soit trouvé.",
         );
@@ -39,7 +37,7 @@ export default class AddWatcherIntegrityCheck {
       }
     } catch (error) {
       console.error(error);
-      this.message.reply("une erreur est survenue.");
+      this.message.reply("une erreur est survenue. Le queryselector n'est peut être pas correct…");
       return false;
     } finally {
       await page.close();
