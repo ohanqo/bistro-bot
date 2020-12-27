@@ -32,7 +32,7 @@ export default class ListWatcherCommand extends AbstractCommand {
 
   private async sendWatcherListMessage(watcherList: WebsiteWatcherEntity[]) {
     const recordsJoined = watcherList.map(({ id, url, querySelector }) => {
-      return `ID: ${id} |  URL: <${url}> | QuerySelector: ${querySelector} \n \n`;
+      return `ID: \`${id}\` |  URL: <${url}> | QuerySelector: \`${querySelector}\` \n \n`;
     });
     await this.message.reply(`\n${recordsJoined.join("")}`);
   }
