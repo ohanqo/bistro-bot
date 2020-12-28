@@ -47,7 +47,7 @@ export default class WebsiteWatcherScheduler {
     const element = await page.$(querySelector);
     const screenshot = await element?.screenshot();
     const embedded = new MessageEmbed()
-      .setTitle("Un site à été mis à jour!")
+      .setTitle("🚨 Un site a été mis à jour ! 🚨")
       .setDescription(`<@!${authorId}> ${url}`)
       .setTimestamp();
 

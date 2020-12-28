@@ -51,7 +51,7 @@ export default class AddWatcherIntegrityCheck {
       const embedded = new MessageEmbed()
         .setColor("#EF4444")
         .setTitle("Une erreur est survenue")
-        .setDescription("Le queryselector n'est peut être pas correct…");
+        .setDescription("Le queryselector n'est peut-être pas correct…");
       if (screenshot !== undefined && screenshot !== "") {
         embedded
           .attachFiles([{ name: "image.png", attachment: screenshot! }])
