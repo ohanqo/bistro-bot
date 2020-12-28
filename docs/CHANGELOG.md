@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/ohanqo/bistro-bot/compare/v1.1.0...v1.1.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* typography ([ac10b20](https://github.com/ohanqo/bistro-bot/commit/ac10b20ad530b403eb4e48356fdc3e9e716806fb))
+
 # [1.1.0](https://github.com/ohanqo/bistro-bot/compare/v1.0.0...v1.1.0) (2020-12-27)
 
 
