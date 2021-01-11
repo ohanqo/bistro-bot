@@ -45,6 +45,14 @@ export default class WebsiteWatcherScheduler {
     const channel = guild?.channels.cache.find((channel) => channel.id === channelId);
 
     const element = await page.$(querySelector);
+
+    // scroll to element (used to load image / lazy loading)
+    await page.evaluate(
+      (selector) => document.querySelector(selector).scrollIntoView({ block: "center" }),
+      querySelector,
+    );
+    await delay(3000);
+
     const screenshot = await element?.screenshot();
     const embedded = new MessageEmbed()
       .setTitle("🚨 Un site a été mis à jour ! 🚨")
