@@ -19,7 +19,7 @@ AppContainer.bind(TYPES.CONSTANT).to(Constant);
 AppContainer.bind(TYPES.PREFIX).toConstantValue(process.env.COMMAND_PREFIX);
 AppContainer.bind(TYPES.TOKEN).toConstantValue(process.env.DISCORD_CLIENT_ID);
 AppContainer.bind(TYPES.BROWSER).toConstantValue(
-  puppeteer.launch({ defaultViewport: { width: 1366, height: 768 }, args: ["--no-sandbox"] }),
+  puppeteer.launch({ defaultViewport: { width: 1920, height: 1080 }, args: ["--no-sandbox"] }),
 );
 AppContainer.bind(TYPES.MESSAGE_SCOPE_BUILDER).to(MessageScopeBuilder);
 AppContainer.bind(TYPES.MEMBER_ADD_SCOPE_BUILDER).to(MemberAddScopeBuilder);
