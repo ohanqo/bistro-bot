@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/ohanqo/bistro-bot/compare/v1.1.1...v1.1.2) (2021-01-11)
+
+
+### Bug Fixes
+
+* **browser:** use high definition resolution ([c3c5f64](https://github.com/ohanqo/bistro-bot/commit/c3c5f644ac7a8c5c05733c46af62c68009e4cd38))
+* **website-watcher:** trigger image loading by scrolling to the element ([761cd54](https://github.com/ohanqo/bistro-bot/commit/761cd546b315a579839674553ea5c7758804dca1))
+
 ## [1.1.1](https://github.com/ohanqo/bistro-bot/compare/v1.1.0...v1.1.1) (2020-12-28)
 
 
