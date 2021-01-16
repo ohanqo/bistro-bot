@@ -36,7 +36,7 @@ export default class AddWatcherIntegrityCheck {
         return true;
       }
     } catch (error) {
-      console.error(error);
+      console.error("[INTEGRITY-CHECK] — An error as occurred while checking provided website configuration…", error);
       await this.sendErrorMessage(page);
       return false;
     } finally {

@@ -20,6 +20,7 @@ export default class PurgeArgumentValidator implements Validator {
 
       return isValid;
     } catch (error) {
+      console.log("[PURGE-ARGS-VALIDATOR] — An error as occurred while parsing arguments…", error);
       return false;
     }
   }

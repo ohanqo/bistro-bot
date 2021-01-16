@@ -22,6 +22,7 @@ export default class PurgeCommand extends AbstractCommand {
       await (this.message.channel as TextChannel).bulkDelete(argument);
       await (await this.message.reply("Les messages ont été supprimés")).delete({ timeout: 3000 });
     } catch (error) {
+      console.error("[PURGE] — An error occurred while executing purge command…", error)
       await this.message.reply("Une erreur est survenue…");
     }
   }

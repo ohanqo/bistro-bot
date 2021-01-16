@@ -10,7 +10,7 @@ export default class AvatarErrorHandler {
   constructor(@inject(TYPES.MESSAGE) private message: Message) {}
 
   public async handle(error: any) {
-    console.error(error);
+    console.error("[AVATAR] — An error as occurred while changing bot avatar…", error);
     const message = this.retrieveErrorMessage(error?.code ?? 0);
     await this.message.reply(message);
   }

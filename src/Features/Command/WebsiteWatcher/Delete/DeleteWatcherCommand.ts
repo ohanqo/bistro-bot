@@ -27,7 +27,7 @@ export default class DeleteWatcherCommand extends AbstractCommand {
       const id = this.message.content.split(" ")[1];
       await this.deleteWatcher(id);
     } catch (error) {
-      console.error(error);
+      console.error("[DELETE-WATCHER] — An error as occurred while deleting specified watcher…", error);
       await this.message.react("❌");
       await this.message.reply("une erreur est survenue lors de la tentative de suppression…");
     }
