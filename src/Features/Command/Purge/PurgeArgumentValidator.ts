@@ -36,6 +36,7 @@ export default class PurgeArgumentValidator implements Validator {
         "Nombre de messages à supprimer. Ce nombre doit être compris entre 1 et 99.",
       );
 
+    await this.message.react("❌");
     await this.message.reply(message);
   }
 }
