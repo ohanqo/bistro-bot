@@ -1,5 +1,5 @@
 import { TYPES } from "@/App/AppTypes";
-import { Client } from "discord.js";
+import { Client, Message } from "discord.js";
 import { inject, injectable } from "inversify";
 import AbstractCommand from "../AbstractCommand";
 import AvatarErrorHandler from "./AvatarErrorHandler";
@@ -10,7 +10,7 @@ export default class AvatarCommand extends AbstractCommand {
 
   constructor(
     @inject(TYPES.CLIENT) private client: Client,
-    @inject(TYPES.MESSAGE_CONTENT_LOWERED) private content: string,
+    @inject(TYPES.MESSAGE) private message: Message,
     @inject(TYPES.AVATAR_ERROR_HANDLER) private errorHandler: AvatarErrorHandler,
   ) {
     super();
@@ -18,9 +18,11 @@ export default class AvatarCommand extends AbstractCommand {
 
   public async execute() {
     try {
-      const URL = this.content.split(" ")[1];
+      const URL = this.message.content.split(" ")[1];
       await this.client.user?.setAvatar(URL);
+      await this.message.react("✅");
     } catch (error) {
+      await this.message.react("❌");
       await this.errorHandler.handle(error);
     }
   }
