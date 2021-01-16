@@ -9,7 +9,7 @@ import * as cron from "node-cron";
 export default class DealabsScheduler {
   constructor(
     @inject(TYPES.CLIENT) private client: Client,
-    @inject(TYPES.BROWSER) private browser: Promise<Browser>,
+    @inject(TYPES.BROWSER) private browser: Browser,
   ) {}
 
   public async init() {
@@ -72,25 +72,31 @@ export default class DealabsScheduler {
   }
 
   private async fetchDeals(): Promise<Deal[]> {
-    const navigator = await this.browser;
-    const pages = await navigator.pages();
-    const page = pages[0];
+    const page = await this.browser.newPage();
+    let deals: Deal[] = [];
 
-    await page.goto("https://www.dealabs.com/", { waitUntil: "networkidle0" });
+    try {
+      await page.goto("https://www.dealabs.com/", { waitUntil: "networkidle0" });
 
-    return await page.evaluate(() => {
-      const elements: Deal[] = [];
+      deals = await page.evaluate(() => {
+        const elements: Deal[] = [];
 
-      document
-        .querySelectorAll(".vue-portal-target .carousel-list .carousel-list-item a")
-        .forEach((element) => {
-          const title = element.textContent?.trim() ?? "";
-          const href = element.getAttribute("href");
-          const link = href ? `https://www.dealabs.com${href}` : "";
-          elements.push({ title, link });
-        });
+        document
+          .querySelectorAll(".vue-portal-target .carousel-list .carousel-list-item a")
+          .forEach((element) => {
+            const title = element.textContent?.trim() ?? "";
+            const href = element.getAttribute("href");
+            const link = href ? `https://www.dealabs.com${href}` : "";
+            elements.push({ title, link });
+          });
 
-      return elements;
-    });
+        return elements;
+      });
+    } catch (error) {
+      console.error("[DEALABS-SCHEDULER] — An error as occurred while retrieving deals…", error);
+    } finally {
+      await page.close();
+      return deals;
+    }
   }
 }

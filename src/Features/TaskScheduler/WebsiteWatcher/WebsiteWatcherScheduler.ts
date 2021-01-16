@@ -26,14 +26,22 @@ export default class WebsiteWatcherScheduler {
 
     for (let watcher of watchers) {
       const page = await this.browser.newPage();
-      const currentOuterHTML = await this.fetchCurrentHTML(page, watcher);
 
-      if (watcher.outerHTML != currentOuterHTML) {
-        await this.websiteWatcherRepository.update(watcher.id, { outerHTML: currentOuterHTML });
-        if (watcher.outerHTML !== "") await this.sendNewChangesMessage(page, watcher);
+      try {
+        const currentOuterHTML = await this.fetchCurrentHTML(page, watcher);
+
+        if (watcher.outerHTML != currentOuterHTML) {
+          await this.websiteWatcherRepository.update(watcher.id, { outerHTML: currentOuterHTML });
+          if (watcher.outerHTML !== "") await this.sendNewChangesMessage(page, watcher);
+        }
+      } catch (error) {
+        console.error(
+          `[WEBSITE-SCHEDULER] — An error occurred with the following page: ${watcher.url}`,
+          error,
+        );
+      } finally {
+        await page.close();
       }
-
-      await page.close();
     }
   }
 
@@ -55,7 +63,8 @@ export default class WebsiteWatcherScheduler {
 
     const screenshot = await element?.screenshot();
     const embedded = new MessageEmbed()
-      .setTitle("🚨 Un site a été mis à jour ! 🚨")
+      .setTitle("⌠🤖⌡ Un site a été mis à jour !")
+      .setColor("#55ACEE")
       .setDescription(`<@!${authorId}> ${url}`)
       .setTimestamp();
 
@@ -64,7 +73,9 @@ export default class WebsiteWatcherScheduler {
         .attachFiles([{ name: "image.png", attachment: screenshot! }])
         .setImage("attachment://image.png");
     } else {
-      console.log(`Impossible de prendre un screenshot de la page à l'url ${url}…`);
+      console.error(
+        `[WEBSITE-SCHEDULER] — Unable to take a screenshot from the page to the url: ${url}…`,
+      );
     }
 
     await (channel as TextChannel | null)?.send(embedded);
