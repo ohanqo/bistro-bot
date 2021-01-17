@@ -12,6 +12,7 @@ import Constant from "./Domain/Constant";
 import TaskSchedulerScopeBuilder from "./App/ScopeBuilder/TaskSchedulerScopeBuilder";
 import DealabsScheduler from "./Features/TaskScheduler/Dealabs/DealabsScheduler";
 import WebsiteWatcherScheduler from "./Features/TaskScheduler/WebsiteWatcher/WebsiteWatcherScheduler";
+import { Browser } from "puppeteer";
 
 const token = AppContainer.get<string>(TYPES.TOKEN);
 const prefix = AppContainer.get<string>(TYPES.PREFIX);
@@ -43,3 +44,12 @@ client
   .login(token)
   .then(() => console.log("🤖 — Bot is connected."))
   .catch((error) => console.error("💥 — An error as occurred: ", error));
+
+process.on("SIGTERM", async () => {
+  console.log("[SIGTERM] — Signal received, trying to gracefully shutdown the application…");
+  
+  const browser = await AppContainer.get<Promise<Browser>>(TYPES.BROWSER);
+  await browser.close();
+
+  process.exit(0);
+});
