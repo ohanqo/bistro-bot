@@ -1,3 +1,15 @@
+## [1.1.3](https://github.com/ohanqo/bistro-bot/compare/v1.1.2...v1.1.3) (2021-01-17)
+
+
+### Bug Fixes
+
+* **avatar:** add success/failure reaction to the message ([b10ebed](https://github.com/ohanqo/bistro-bot/commit/b10ebed3b2d511b116b200280fdb7a9d12cbe676))
+* **avatar:** reply with the discord api error instead of the generic one ([a73cf1e](https://github.com/ohanqo/bistro-bot/commit/a73cf1ee7aaa5ff01ee49630e7164f066709a96b))
+* **browser:** prevent crash on navigation error ([ba1a1f0](https://github.com/ohanqo/bistro-bot/commit/ba1a1f04d2370900030e54577d4fecd567da1c78))
+* **dealabs:** allows renaming of the channel ([b686d56](https://github.com/ohanqo/bistro-bot/commit/b686d56d8966c2ceb5041d0d3996f0e5e6dce323))
+* **purge:** add success/failure reaction to the message ([88a6332](https://github.com/ohanqo/bistro-bot/commit/88a6332cbfd0a3902c103b147395ee49446b1709))
+* **purge:** reply with the discord api error instead of the generic one ([cfc47ec](https://github.com/ohanqo/bistro-bot/commit/cfc47ec03936fae4e21a3d4bb4dc468e7b56575d))
+
 ## [1.1.2](https://github.com/ohanqo/bistro-bot/compare/v1.1.1...v1.1.2) (2021-01-11)
 
 
