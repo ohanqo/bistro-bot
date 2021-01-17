@@ -20,11 +20,14 @@ export default class PurgeCommand extends AbstractCommand {
     try {
       const argument = Number(this.message.content.split(" ")[1]) + 1;
       await (this.message.channel as TextChannel).bulkDelete(argument);
-      await (await this.message.reply("Les messages ont été supprimés")).delete({ timeout: 3000 });
+      await (await this.message.reply("les messages ont été supprimés")).delete({ timeout: 3000 });
     } catch (error) {
-      console.error("[PURGE] — An error occurred while executing purge command…", error)
+      console.error("[PURGE] — An error occurred while executing purge command…", error);
+
+      const message =
+        error instanceof Error ? error.message.toLowerCase() : "Une erreur est survenue…";
       await this.message.react("❌");
-      await this.message.reply("Une erreur est survenue…");
+      await this.message.reply(message);
     }
   }
 }
