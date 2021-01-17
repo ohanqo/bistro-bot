@@ -1,15 +1,16 @@
 import { TYPES } from "@/App/AppTypes";
-import { Client, EmbedFieldData, MessageEmbed, TextChannel } from "discord.js";
+import { EmbedFieldData, MessageEmbed } from "discord.js";
 import { inject, injectable } from "inversify";
 import { Browser } from "puppeteer";
 import Deal from "./Deal";
 import * as cron from "node-cron";
+import DealabsChannelManager from "./DealabsChannelManager";
 
 @injectable()
 export default class DealabsScheduler {
   constructor(
-    @inject(TYPES.CLIENT) private client: Client,
     @inject(TYPES.BROWSER) private browser: Browser,
+    @inject(TYPES.DEALABS_CHANNEL_MANAGER) private channelManager: DealabsChannelManager,
   ) {}
 
   public async init() {
@@ -19,31 +20,37 @@ export default class DealabsScheduler {
   private async publishNewDeals() {
     const deals = await this.fetchDeals();
     const dealsWithSpacing = this.addSpaceBetweenSection(deals);
-    const fields: EmbedFieldData[] = dealsWithSpacing.map((deal) => {
+    const fields = this.convertDealsToFieldList(dealsWithSpacing);
+    const message = this.generateEmbeddedMessage(fields);
+    const channels = await this.channelManager.findOrCreateDealChannels();
+
+    for (let channel of channels) {
+      try {
+        await channel.send(message);
+      } catch (error) {
+        console.error("[DEALABS] — An error as occurred while sending deals message…", error);
+      }
+    }
+  }
+
+  private convertDealsToFieldList(dealsWithSpacing: Deal[]): EmbedFieldData[] {
+    return dealsWithSpacing.map((deal) => {
       return {
         name: deal.title,
         value: deal.link,
       };
     });
+  }
 
+  private generateEmbeddedMessage(fields: EmbedFieldData[]): MessageEmbed {
     const color = Math.floor(Math.random() * 16777215).toString(16);
 
-    const message = new MessageEmbed()
+    return new MessageEmbed()
       .setColor(`#${color}`)
       .setTitle(`DEALS DU JOUR — ${this.getFormattedDate()}`)
       .setThumbnail("https://pbs.twimg.com/profile_images/479251986391379968/gNJPLQNb_400x400.png")
       .addFields(fields)
       .setTimestamp();
-
-    // Refacto
-    const name = "deals";
-    await Promise.all(
-      this.client.guilds.cache.map(async (guild) => {
-        const potentialChannel = guild.channels.cache.find((channel) => channel.name === name);
-        const channel = potentialChannel ?? (await guild.channels.create(name, { type: "text" }));
-        await (channel as TextChannel).send(message);
-      }),
-    );
   }
 
   private addSpaceBetweenSection(fields: Deal[]): Deal[] {
@@ -93,7 +100,7 @@ export default class DealabsScheduler {
         return elements;
       });
     } catch (error) {
-      console.error("[DEALABS-SCHEDULER] — An error as occurred while retrieving deals…", error);
+      console.error("[DEALABS] — An error as occurred while retrieving deals…", error);
     } finally {
       await page.close();
       return deals;
