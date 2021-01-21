@@ -19,6 +19,12 @@ export default class DealabsScheduler {
 
   private async publishNewDeals() {
     const deals = await this.fetchDeals();
+
+    if (deals.length === 0) {
+      console.error("[DEALABS] — The list of deals is empty!");
+      return;
+    }
+
     const dealsWithSpacing = this.addSpaceBetweenSection(deals);
     const fields = this.convertDealsToFieldList(dealsWithSpacing);
     const message = this.generateEmbeddedMessage(fields);
@@ -89,7 +95,7 @@ export default class DealabsScheduler {
         const elements: Deal[] = [];
 
         document
-          .querySelectorAll(".vue-portal-target .carousel-list .carousel-list-item a")
+          .querySelectorAll(".vue-portal-target > div > section > div > div > div > div > div a")
           .forEach((element) => {
             const title = element.textContent?.trim() ?? "";
             const href = element.getAttribute("href");
