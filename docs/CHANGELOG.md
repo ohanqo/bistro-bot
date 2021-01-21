@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/ohanqo/bistro-bot/compare/v1.1.3...v1.1.4) (2021-01-21)
+
+
+### Bug Fixes
+
+* **dealabs:** handle website html changes ([531196a](https://github.com/ohanqo/bistro-bot/commit/531196a8228baca5b7fcf5a06a0a344ba6f38faf))
+
 ## [1.1.3](https://github.com/ohanqo/bistro-bot/compare/v1.1.2...v1.1.3) (2021-01-17)
 
 
