@@ -14,4 +14,10 @@ export default class WebsiteWatcherContentResolver {
       return document.querySelector(qs)?.outerHTML ?? "";
     }, querySelector);
   }
+
+  public async resolveElementText(page: Page, querySelector: string): Promise<string> {
+    return await page.evaluate((qs) => {
+      return document.querySelector(qs)?.outerText ?? "";
+    }, querySelector);
+  }
 }

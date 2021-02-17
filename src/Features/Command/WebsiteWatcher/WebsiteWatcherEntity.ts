@@ -29,6 +29,18 @@ export default class WebsiteWatcherEntity {
   @Column({ name: "author_id", type: "varchar" })
   public authorId = "";
 
+  @Column({ type: "varchar", nullable: true, default: null })
+  public title: string | null = null;
+
+  @Column({ name: "screenshot_query_selector", type: "text", nullable: true, default: null })
+  public screenshotQuerySelector: string | null = null;
+
+  @Column({ name: "description_query_selector", type: "text", nullable: true, default: null })
+  public descriptionQuerySelector: string | null = null;
+
+  @Column({ type: "varchar", nullable: true, default: null })
+  public color: string | null = null;
+
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   createdAt!: Date;
 
