@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/ohanqo/bistro-bot/compare/v1.1.4...v1.2.0) (2021-02-17)
+
+
+### Features
+
+* **website-watcher:** allow custom title, description and screenshot ([61ee3b1](https://github.com/ohanqo/bistro-bot/commit/61ee3b122bfcf97a156a1a1319ff4b3d36010c3e))
+
 ## [1.1.4](https://github.com/ohanqo/bistro-bot/compare/v1.1.3...v1.1.4) (2021-01-21)
 
 
