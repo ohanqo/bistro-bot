@@ -2,18 +2,25 @@ import { TYPES } from "@/App/AppTypes";
 import { Channel, Collection, Guild, GuildMember } from "discord.js";
 import { inject, injectable } from "inversify";
 import { ChannelType } from "../ChannelType";
+import Constant from "../Constant";
 
 @injectable()
 export default class ChannelManager {
-  constructor(@inject(TYPES.GUILD) private guild: Guild) {}
+  constructor(
+    @inject(TYPES.GUILD) private guild: Guild,
+    @inject(TYPES.CONSTANT) private constant: Constant,
+  ) {}
 
   findById(id: string): Channel | undefined {
     return this.guild.channels.cache.find((channel) => channel.id === id);
   }
 
-  async findOrCreate(name: string, type: ChannelType = "voice"): Promise<Channel> {
-    const potentialChannel = this.guild.channels.cache.find((channel) => channel.name === name);
-    return potentialChannel ?? (await this.guild.channels.create(name, { type }));
+  async findOrCreate(id: string, type: ChannelType = "voice"): Promise<Channel> {
+    const potentialChannel = this.findById(id);
+    return (
+      potentialChannel ??
+      (await this.guild.channels.create(this.constant.JAIL_CHANNEL_NAME, { type }))
+    );
   }
 
   async moveMemberListToVoiceChannel(members: Collection<string, GuildMember>, channel: Channel) {

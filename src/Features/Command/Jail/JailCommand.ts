@@ -5,9 +5,11 @@ import ChannelManager from "@/Domain/Message/ChannelManager";
 import RoleManager from "@/Domain/Message/RoleManager";
 import SenderHasEditRolePermissionValidator from "@/Features/Validator/SenderHasEditRolePermissionValidator";
 import TargetsAreNotAdminValidator from "@/Features/Validator/TargetsAreNotAdminValidator";
-import { Message, Role } from "discord.js";
+import { Channel, Message, Role } from "discord.js";
 import { inject, injectable } from "inversify";
+import { Repository } from "typeorm";
 import AbstractCommand from "../AbstractCommand";
+import JailChannelEntity from "./JailChannelEntity";
 
 @injectable()
 export default class JailCommand extends AbstractCommand {
@@ -24,6 +26,8 @@ export default class JailCommand extends AbstractCommand {
     private roleManager: RoleManager,
     @inject(TYPES.CONSTANT)
     private constants: Constant,
+    @inject(TYPES.JAIL_CHANNEL_REPOSITORY)
+    private jailChannelRepository: Repository<JailChannelEntity>,
     @inject(TYPES.TARGETS_NOT_ADMIN_VALIDATOR)
     targetsNonAdminValidator: TargetsAreNotAdminValidator,
     @inject(TYPES.SENDER_HAS_EDIT_ROLE_VALIDATOR)
@@ -34,10 +38,13 @@ export default class JailCommand extends AbstractCommand {
   }
 
   public async execute() {
-    const { JAIL_CHANNEL_NAME } = this.constants;
     const mentions = this.message.mentions.members!;
 
-    const channel = await this.channelManager.findOrCreate(JAIL_CHANNEL_NAME);
+    const channelRecord = await this.jailChannelRepository.findOne({
+      guildId: this.message.guild?.id,
+    });
+    const channel = await this.channelManager.findOrCreate(channelRecord?.channelId ?? "");
+    if (channelRecord === undefined) await this.saveChannelRecordFromChannel(channel);
     const jailRole = await this.getJailRole();
 
     this.state.pushMembersToJail(mentions.map((m) => m));
@@ -63,5 +70,19 @@ export default class JailCommand extends AbstractCommand {
     );
 
     return role;
+  }
+
+  private async saveChannelRecordFromChannel(channel: Channel) {
+    try {
+      const entity = new JailChannelEntity();
+      entity.channelId = channel.id;
+      entity.guildId = this.message.guild?.id ?? "";
+      await this.jailChannelRepository.save(entity);
+    } catch (error) {
+      console.log(
+        "[JAIL] — An error as occurred while saving channel record in the database…",
+        error,
+      );
+    }
   }
 }
