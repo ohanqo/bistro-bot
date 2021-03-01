@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/ohanqo/bistro-bot/compare/v1.2.0...v1.3.0) (2021-03-01)
+
+
+### Bug Fixes
+
+* **jail:** allow jail channel to be renamed ([9691493](https://github.com/ohanqo/bistro-bot/commit/96914933b01f5243bd85bc7bf51cef26c3bac0a8))
+
+
+### Features
+
+* **website-watcher:** dm author if the watcher no longer works ([1da658b](https://github.com/ohanqo/bistro-bot/commit/1da658bc7ee72d20ca431f694b0c523afc89ea16))
+
 # [1.2.0](https://github.com/ohanqo/bistro-bot/compare/v1.1.4...v1.2.0) (2021-02-17)
 
 
