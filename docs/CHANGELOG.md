@@ -1,3 +1,11 @@
+### [1.3.1](https://github.com/ohanqo/bistro-bot/compare/v1.3.0...v1.3.1) (2021-03-01)
+
+
+### :repeat: CI
+
+* **github action:** add semantic-release ([c18440a](https://github.com/ohanqo/bistro-bot/commit/c18440acec122db03c56fcfcbaafd410b200f3e8))
+* **github action:** increment package version ([b8445f3](https://github.com/ohanqo/bistro-bot/commit/b8445f3c50edded34b60cf4429ac3d9075339285))
+
 # [1.3.0](https://github.com/ohanqo/bistro-bot/compare/v1.2.0...v1.3.0) (2021-03-01)
 
 
