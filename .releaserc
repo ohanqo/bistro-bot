@@ -69,15 +69,15 @@
       }
     ],
     [
-      "@semantic-release/git",
-      {
-        "assets": ["package.json", "docs/CHANGELOG.md"]
-      }
-    ],
-    [
       "@semantic-release/npm",
       {
         "npmPublish": false
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["package.json", "docs/CHANGELOG.md"]
       }
     ],
     "@semantic-release/github",
