@@ -8,6 +8,7 @@ import Constant from "@/Domain/Constant";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import TaskSchedulerScopeBuilder from "./ScopeBuilder/TaskSchedulerScopeBuilder";
+import ReactionScopeBuilder from "./ScopeBuilder/ReactionScopeBuilder";
 
 puppeteer.use(StealthPlugin());
 
@@ -24,5 +25,6 @@ AppContainer.bind(TYPES.BROWSER).toConstantValue(
 AppContainer.bind(TYPES.MESSAGE_SCOPE_BUILDER).to(MessageScopeBuilder);
 AppContainer.bind(TYPES.MEMBER_ADD_SCOPE_BUILDER).to(MemberAddScopeBuilder);
 AppContainer.bind(TYPES.TASK_SCHEDULER_SCOPE_BUILDER).to(TaskSchedulerScopeBuilder);
+AppContainer.bind(TYPES.REACTION_SCOPE_BUILDER).to(ReactionScopeBuilder);
 
 export { AppContainer };

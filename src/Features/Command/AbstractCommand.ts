@@ -7,7 +7,7 @@ export default abstract class AbstractCommand {
   public validators: Validator[] = [];
 
   async execute() {
-    throw new Error("A command as not been implemented!");
+    throw new Error("A command has not been implemented!");
   }
 
   async run() {

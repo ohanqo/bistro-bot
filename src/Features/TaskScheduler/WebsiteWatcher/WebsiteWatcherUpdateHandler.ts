@@ -1,19 +1,18 @@
 import { TYPES } from "@/App/AppTypes";
 import WebsiteWatcherEntity from "@/Features/Command/WebsiteWatcher/WebsiteWatcherEntity";
-import { Client, GuildChannel, GuildChannelManager, TextChannel } from "discord.js";
-import { watch } from "fs";
+import { Client, TextChannel } from "discord.js";
 import { inject, injectable } from "inversify";
 import { Page } from "puppeteer";
 import { Repository } from "typeorm";
-import WebsiteWatcherMessageBuilder from "./WebsiteWatcherMessageBuilder";
+import WebsiteWatcherSuccessMessageBuilder from "./MessageBuilder/WebsiteWatcherSuccessMessageBuilder";
 
 @injectable()
 export default class WebsiteWatcherUpdateHandler {
   constructor(
     @inject(TYPES.CLIENT)
     private client: Client,
-    @inject(TYPES.WEBSITE_WATCHER_MESSAGE_BUILDER)
-    private messageBuilder: WebsiteWatcherMessageBuilder,
+    @inject(TYPES.WEBSITE_WATCHER_SUCCESS_MESSAGE_BUILDER)
+    private messageBuilder: WebsiteWatcherSuccessMessageBuilder,
     @inject(TYPES.WEBSITE_WATCHER_REPOSITORY)
     private websiteWatcherRepository: Repository<WebsiteWatcherEntity>,
   ) {}

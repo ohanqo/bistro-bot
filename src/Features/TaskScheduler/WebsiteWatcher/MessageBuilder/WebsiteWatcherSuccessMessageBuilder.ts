@@ -3,18 +3,18 @@ import WebsiteWatcherEntity from "@/Features/Command/WebsiteWatcher/WebsiteWatch
 import { MessageEmbed } from "discord.js";
 import { inject, injectable } from "inversify";
 import { Page } from "puppeteer";
-import WebsiteWatcherContentResolver from "./WebsiteWatcherContentResolver";
-import WebsiteWatcherScreenshotResolver from "./WebsiteWatcherScreenshotResolver";
+import ContentResolver from "@/Domain/Browser/ContentResolver";
+import ScreenshotResolver from "@/Domain/Browser/ScreenshotResolver";
 
 @injectable()
-export default class WebsiteWatcherMessageBuilder {
+export default class WebsiteWatcherSuccessMessageBuilder {
   private message = new MessageEmbed();
 
   constructor(
-    @inject(TYPES.WEBSITE_WATCHER_CONTENT_RESOLVER)
-    private contentResolver: WebsiteWatcherContentResolver,
-    @inject(TYPES.WEBSITE_WATCHER_SCREENSHOT_RESOLVER)
-    private screenshotResolver: WebsiteWatcherScreenshotResolver,
+    @inject(TYPES.CONTENT_RESOLVER)
+    private contentResolver: ContentResolver,
+    @inject(TYPES.SCREENSHOT_RESOLVER)
+    private screenshotResolver: ScreenshotResolver,
   ) {}
 
   public async build(page: Page, watcher: WebsiteWatcherEntity): Promise<MessageEmbed> {
@@ -41,7 +41,7 @@ export default class WebsiteWatcherMessageBuilder {
         .setImage("attachment://image.png");
     } catch (error) {
       console.error(
-        `[MESSAGE-BUILDER] — Unable to take screenshot on page with URL: ${watcher.url}…`,
+        `[SUCCESS-MESSAGE-BUILDER] — Unable to take screenshot on page with URL: ${watcher.url}…`,
         error,
       );
     }
@@ -59,7 +59,7 @@ export default class WebsiteWatcherMessageBuilder {
       this.message.setDescription(fetchedHTML);
     } catch (error) {
       console.error(
-        `[MESSAGE-BUILDER] — Unable to add description to the message with watcher id: ${id}`,
+        `[SUCCESS-MESSAGE-BUILDER] — Unable to add description to the message with watcher id: ${id}`,
         error,
       );
     }

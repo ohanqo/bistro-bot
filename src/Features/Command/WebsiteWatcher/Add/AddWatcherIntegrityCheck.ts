@@ -18,7 +18,6 @@ export default class AddWatcherIntegrityCheck {
     const url = content.split(" ")[1];
     const querySelector = content.inQuoteContent()?.toString() ?? "";
     const page = await this.browser.newPage();
-    await page.setUserAgent(this.constant.USER_AGENT);
 
     try {
       await page.goto(url, { waitUntil: "networkidle0" });
