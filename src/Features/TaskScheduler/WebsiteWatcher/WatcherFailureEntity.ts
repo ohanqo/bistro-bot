@@ -18,8 +18,11 @@ export default class WatcherFailureEntity {
   @JoinColumn({ name: "watcher_id" })
   public watcher!: WebsiteWatcherEntity;
 
-  @Column({ name: "message_id" })
+  @Column({ name: "message_id", type: "text", nullable: true, default: null })
   public messageId!: string;
+
+  @Column({ name: "retry_count", default: 1 })
+  public retryCount: number = 1;
 
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   public createdAt!: Date;

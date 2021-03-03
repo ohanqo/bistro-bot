@@ -1,6 +1,5 @@
 import { TYPES } from "@/App/AppTypes";
 import WebsiteWatcherEntity from "@/Features/Command/WebsiteWatcher/WebsiteWatcherEntity";
-import { fail, throws } from "assert";
 import { Client, Message } from "discord.js";
 import { inject, injectable } from "inversify";
 import { Page } from "puppeteer";
@@ -22,18 +21,37 @@ export default class WebsiteWatcherFailureHandler {
   public async handleFailure(page: Page, watcher: WebsiteWatcherEntity) {
     try {
       const existingFailure = await this.failureRepository.findOne({ where: { watcher } });
-      if (existingFailure !== undefined) return;
 
-      const message = await this.sendFailureDM(page, watcher);
-      if (message === undefined) return;
+      if (existingFailure) {
+        const shouldNotifyAuthor = existingFailure.retryCount === 2;
+        const shouldIncrementRetryCount = existingFailure.retryCount < 3;
 
-      await this.saveFailure(watcher, message.id);
+        if (shouldNotifyAuthor) await this.notifyAuthor(page, watcher, existingFailure);
+        else if (shouldIncrementRetryCount) await this.incrementRetryCount(existingFailure);
+      } else {
+        await this.saveWatcherFailure({ watcher });
+      }
     } catch (error) {
       console.log(
         "[FAILURE-HANDLER] — An error as occurred while searching for a failure in the database…",
         error?.message,
       );
     }
+  }
+
+  private async notifyAuthor(
+    page: Page,
+    watcher: WebsiteWatcherEntity,
+    failure: WatcherFailureEntity,
+  ) {
+    const message = await this.sendFailureDM(page, watcher);
+    if (!message) return;
+
+    await this.saveWatcherFailure({
+      ...failure,
+      messageId: message.id,
+      retryCount: failure.retryCount + 1,
+    });
   }
 
   private async sendFailureDM(
@@ -55,16 +73,20 @@ export default class WebsiteWatcherFailureHandler {
     }
   }
 
-  private async saveFailure(watcher: WebsiteWatcherEntity, messageId: string) {
-    try {
-      const failure = new WatcherFailureEntity();
-      failure.watcher = watcher;
-      failure.messageId = messageId;
+  private async incrementRetryCount(existingFailure: WatcherFailureEntity) {
+    await this.saveWatcherFailure({
+      ...existingFailure,
+      retryCount: existingFailure.retryCount + 1,
+    });
+  }
 
-      await this.failureRepository.save(failure);
+  private async saveWatcherFailure(failure: Partial<WatcherFailureEntity>) {
+    try {
+      const failureEntity = Object.assign(new WatcherFailureEntity(), failure);
+      await this.failureRepository.save(failureEntity);
     } catch (error) {
       console.log(
-        "[FAILURE-HANDLER] — An error as occurred while trying to save new failure in the database…",
+        "[FAILURE-HANDLER] — An error as occurred while trying to save/update failure in the database…",
         error?.message,
       );
     }
