@@ -1,3 +1,10 @@
+### [1.3.2](https://github.com/ohanqo/bistro-bot/compare/v1.3.1...v1.3.2) (2021-03-04)
+
+
+### :bug: Bug Fixes
+
+* **website-watcher:** sends a dm after 3 tries of watch ([0d382bb](https://github.com/ohanqo/bistro-bot/commit/0d382bb02b996f2e627d98905b259cdea719a05a))
+
 ### [1.3.1](https://github.com/ohanqo/bistro-bot/compare/v1.3.0...v1.3.1) (2021-03-01)
 
 
