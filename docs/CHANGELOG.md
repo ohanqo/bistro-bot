@@ -1,3 +1,10 @@
+### [1.3.3](https://github.com/ohanqo/bistro-bot/compare/v1.3.2...v1.3.3) (2021-03-06)
+
+
+### :bug: Bug Fixes
+
+* **website-watcher:** clear failures if watcher is functional again ([dcaf33b](https://github.com/ohanqo/bistro-bot/commit/dcaf33b4fc7ca3bed8a501eaf436e72c9763fc4c))
+
 ### [1.3.2](https://github.com/ohanqo/bistro-bot/compare/v1.3.1...v1.3.2) (2021-03-04)
 
 
