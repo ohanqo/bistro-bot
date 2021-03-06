@@ -5,7 +5,6 @@ import { inject, injectable } from "inversify";
 import { Page } from "puppeteer";
 import { Repository } from "typeorm";
 import WebsiteWatcherSuccessMessageBuilder from "./MessageBuilder/WebsiteWatcherSuccessMessageBuilder";
-import WatcherFailureEntity from "./WatcherFailureEntity";
 
 @injectable()
 export default class WebsiteWatcherUpdateHandler {
@@ -16,15 +15,12 @@ export default class WebsiteWatcherUpdateHandler {
     private messageBuilder: WebsiteWatcherSuccessMessageBuilder,
     @inject(TYPES.WEBSITE_WATCHER_REPOSITORY)
     private websiteWatcherRepository: Repository<WebsiteWatcherEntity>,
-    @inject(TYPES.WATCHER_FAILURE_REPOSITORY)
-    private watcherFailureRepository: Repository<WatcherFailureEntity>,
   ) {}
 
   public async handleUpdate(page: Page, watcher: WebsiteWatcherEntity, outerHTML: string) {
     try {
       await this.websiteWatcherRepository.update(watcher.id, { outerHTML });
       await this.publishMessage(page, watcher);
-      await this.removePotentialFailureFromDatabase(watcher);
     } catch (error) {
       console.error("[UPDATE-HANDLER] — An error as occurred…", error);
     }
@@ -47,17 +43,5 @@ export default class WebsiteWatcherUpdateHandler {
     }
 
     return channel as TextChannel;
-  }
-
-  private async removePotentialFailureFromDatabase(watcher: WebsiteWatcherEntity) {
-    try {
-      const failure = await this.watcherFailureRepository.findOne({ watcher });
-      if (failure) await this.watcherFailureRepository.remove(failure);
-    } catch (error) {
-      console.log(
-        `[UPDATE-HANDLER] — An error as occurred while trying to search/delete existings failures from the database with the watcherId: ${watcher.id}`,
-        error?.message,
-      );
-    }
   }
 }
