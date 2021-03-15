@@ -1,3 +1,10 @@
+### [1.3.4](https://github.com/ohanqo/bistro-bot/compare/v1.3.3...v1.3.4) (2021-03-15)
+
+
+### :bug: Bug Fixes
+
+* **database:** add ssl property to match new heroku prerequisites ([c97bd36](https://github.com/ohanqo/bistro-bot/commit/c97bd36b58e0cd703b8a018fe604e3900d7d694e))
+
 ### [1.3.3](https://github.com/ohanqo/bistro-bot/compare/v1.3.2...v1.3.3) (2021-03-06)
 
 
