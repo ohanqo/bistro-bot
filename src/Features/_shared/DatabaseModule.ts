@@ -17,6 +17,7 @@ const databaseModule = new AsyncContainerModule(async (bind: interfaces.Bind) =>
         entities: ["dist/**/*Entity.js"],
         migrations: ["dist/App/Migration/*.js"],
         migrationsRun: true,
+        ssl: true,
       });
   const websiteWatcherRepository = connection.getRepository(WebsiteWatcherEntity);
   const dealabsChannelRepository = connection.getRepository(DealabsChannelEntity);
