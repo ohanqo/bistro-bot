@@ -1,0 +1,16 @@
+const TYPES = {
+  CLIENT: Symbol("CLIENT"),
+  REST: Symbol("REST"),
+  DATABASE: Symbol("DATABASE"),
+  LOGGER: Symbol("LOGGER"),
+  DISCORD_HANDLER: Symbol("DISCORD_HANDLER"),
+  COMMAND: Symbol("COMMAND"),
+  INTERACTION: Symbol("INTERACTION"),
+  YT_HTTP: Symbol("YT_HTTP"),
+  JAIL_REPO: Symbol("JAIL_REPO"),
+  JAIL_MANAGER: Symbol("JAIL_MANAGER"),
+  JAIL_STATE: Symbol("JAIL_STATE"),
+  REMINDER_REPO: Symbol("REMINDER_REPO")
+}
+
+export { TYPES }

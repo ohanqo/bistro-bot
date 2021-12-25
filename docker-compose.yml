@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  database:
+    container_name: bistrobot-database
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - database:/data/postgres
+    ports:
+      - 5432:5432
+    networks:
+      net:
+networks:
+  net:
+
+volumes:
+  database:
