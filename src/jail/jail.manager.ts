@@ -29,11 +29,21 @@ export default class JailManager {
     return role
   }
 
+  public async setJailChannel(newChannelId: string) {
+    let entity = await this.jailRepository.findOne({ where: { channelId: newChannelId } }) // check for existing record with the specific channel
+
+    if (entity == null) {
+      entity = JailEntity.factory(newChannelId, this.interaction.guild?.id ?? "undefined")
+    } else {
+      entity.channelId = newChannelId
+    }
+
+    await this.jailRepository.upsert(entity, ["guildId"])
+  }
+
   private async createJailChannel(): Promise<VoiceChannel | undefined> {
     const channel = await this.interaction.guild?.channels.create("Jail", { type: "GUILD_VOICE" })
-    const entity = new JailEntity()
-    entity.channelId = channel?.id ?? "undefined"
-    entity.guildId = channel?.guild?.id ?? "undefined"
+    const entity = JailEntity.factory(channel?.id ?? "undefined", channel?.guild?.id ?? "undefined")
     await this.jailRepository.save(entity)
     return channel
   }

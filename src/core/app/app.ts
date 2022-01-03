@@ -1,7 +1,5 @@
-import Bree from "bree/types"
-import { inject, injectable } from "inversify"
+import { injectable } from "inversify"
 import DiscordClient from "../discord/discord.client"
-import { TYPES } from "./app.types"
 
 @injectable()
 export default class App {

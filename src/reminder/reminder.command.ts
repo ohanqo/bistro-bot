@@ -49,12 +49,12 @@ export default class ReminderCommand extends Command {
       const channel = this.interaction.channel as TextChannel
       const entity = new ReminderEntity()
       entity.message = message
-      entity.isPrivate = isPrivate 
+      entity.isPrivate = isPrivate
       entity.date = parsedDate
       entity.channelId = channel?.id ?? "undefined"
       entity.guildId = channel?.guild?.id ?? "undefined"
       const savedEntity = await this.reminderRepo.save(entity)
-      
+
       await this.interaction.reply({
         ephemeral: isPrivate,
         content: `Date parsé: ${parsedDate}, Privé: ${isPrivate}`

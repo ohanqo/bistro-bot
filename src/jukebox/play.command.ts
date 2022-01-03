@@ -5,7 +5,7 @@ import { command } from "@/core/command/command.decorator"
 import { guards } from "@/core/guard/guard.decorator"
 import { options } from "@/core/option/option.decorator"
 import YoutubeRepository from "@/core/youtube/youtube.repository"
-import { joinVoiceChannel } from "@discordjs/voice"
+import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice"
 import { CommandInteraction, GuildMember } from "discord.js"
 import { inject } from "inversify"
 import SenderIsInChannelGuard from "./guards/sender-is-in-channel.guard"
@@ -61,7 +61,8 @@ export default class PlayCommand extends Command {
 
   private joinSenderChannel() {
     const guildId = this.interaction.guild?.id ?? ""
-    const adapterCreator = this.interaction.guild?.voiceAdapterCreator!
+    const adapterCreator = this.interaction.guild
+      ?.voiceAdapterCreator! as DiscordGatewayAdapterCreator
     const channelId = (this.interaction.member as GuildMember).voice.channel?.id!
     const connection = joinVoiceChannel({ channelId, guildId, adapterCreator })
     connection.subscribe(this.player.getPlayer())
