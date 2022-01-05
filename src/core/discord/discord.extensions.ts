@@ -1,4 +1,12 @@
-import { CreateRoleOptions, Guild, GuildMember, Role, VoiceChannel } from "discord.js"
+import {
+  Client,
+  CreateRoleOptions,
+  Guild,
+  GuildMember,
+  Role,
+  TextChannel,
+  VoiceChannel
+} from "discord.js"
 
 declare module "discord.js" {
   interface GuildMember {
@@ -10,6 +18,11 @@ declare module "discord.js" {
 
   interface Guild {
     findOrCreateRole: (data: CreateRoleOptions) => Promise<Role>
+  }
+
+  interface Client {
+    findChannel: (guildId: string, channelId: string) => TextChannel | undefined
+    findMember: (guildId: string, memberId: string) => GuildMember | undefined
   }
 }
 
@@ -38,6 +51,16 @@ GuildMember.prototype.replaceRoles = async function (...roles: Role[]) {
 Guild.prototype.findOrCreateRole = async function (data: CreateRoleOptions) {
   const potentialRole = this.roles.cache.find((role) => role.name === data.name)
   return potentialRole ?? (await this.roles.create(data))
+}
+
+Client.prototype.findChannel = function (guildId: string, channelId: string) {
+  const potentialGuild = this.guilds.cache.find((guild) => guild.id === guildId)
+  return potentialGuild?.channels.cache.find((channel) => channel.id === channelId) as TextChannel
+}
+
+Client.prototype.findMember = function (guildId: string, memberId: string) {
+  const potentialGuild = this.guilds.cache.find((guild) => guild.id === guildId)
+  return potentialGuild?.members.cache.find((member) => member.id === memberId)
 }
 
 export {}

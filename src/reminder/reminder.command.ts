@@ -11,6 +11,7 @@ import DateOption from "./options/date.option"
 import MessageOption from "./options/message.option"
 import PrivateOption from "./options/private.option"
 import ReminderEntity from "./reminder.entity"
+import ReminderScheduler from "./reminder.scheduler"
 
 @command("reminder", "Te rapelle d'un message à une date donnée.")
 @options(MessageOption, DateOption, PrivateOption)
@@ -18,8 +19,8 @@ export default class ReminderCommand extends Command {
   constructor(
     @inject(TYPES.INTERACTION)
     private interaction: CommandInteraction,
-    @inject(TYPES.REMINDER_REPO)
-    private reminderRepo: Repository<ReminderEntity>
+    @inject(TYPES.REMINDER_SCHEDULER)
+    private reminderScheduler: ReminderScheduler
   ) {
     super()
   }
@@ -45,19 +46,23 @@ export default class ReminderCommand extends Command {
       })
     } else {
       const isPrivate = this.interaction.options.getBoolean(new PrivateOption().name) ?? false
+      const memberId = this.interaction.member?.user.id ?? ""
       const message = this.interaction.options.getString(new MessageOption().name) ?? ""
       const channel = this.interaction.channel as TextChannel
-      const entity = new ReminderEntity()
-      entity.message = message
-      entity.isPrivate = isPrivate
-      entity.date = parsedDate
-      entity.channelId = channel?.id ?? "undefined"
-      entity.guildId = channel?.guild?.id ?? "undefined"
-      const savedEntity = await this.reminderRepo.save(entity)
+      const entity = ReminderEntity.factory({
+        message: message,
+        isPrivate: isPrivate,
+        memberId: memberId,
+        date: parsedDate,
+        channelId: channel?.id ?? "undefined",
+        guildId: channel?.guild?.id ?? "undefined"
+      })
+
+      await this.reminderScheduler.scheduleJob(entity)
 
       await this.interaction.reply({
         ephemeral: isPrivate,
-        content: `Date parsé: ${parsedDate}, Privé: ${isPrivate}`
+        content: `Nouveau rappel: ${message} \n Date: ${parsedDate}`
       })
     }
   }
