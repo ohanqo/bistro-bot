@@ -1,5 +1,8 @@
-import winston, { format } from "winston";
-const { printf, timestamp, combine } = format;
+import winston, { format } from "winston"
+const { printf, timestamp, combine } = format
+import { dirname } from "path"
+
+export const filename = "bistro-bot.log"
 
 export default winston.createLogger({
   level: "info",
@@ -7,14 +10,17 @@ export default winston.createLogger({
     timestamp(),
     printf(({ level, message, timestamp }) => {
       if (message === "") {
-        return "";
+        return ""
       }
-      return `${timestamp} ${level.toUpperCase()} — ${message}`;
-    }),
+      return `${timestamp} ${level.toUpperCase()} — ${message}`
+    })
   ),
   defaultMeta: { service: "user-service" },
   transports: [
-    new winston.transports.File({ filename: "bistro-bot.log" }),
-    new winston.transports.Console(),
-  ],
-});
+    new winston.transports.File({
+      filename,
+      dirname: dirname(require?.main?.filename ?? "")
+    }),
+    new winston.transports.Console()
+  ]
+})

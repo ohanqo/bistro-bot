@@ -5,6 +5,7 @@ import App from "./app/app"
 import { TYPES } from "./app/app.types"
 import { commandModule } from "./command/command.module"
 import { discordModule } from "./discord/discord.module"
+import { guardModule } from "./guard/guard.module"
 import Logger from "./logger/logger"
 import { youtubeModule } from "./youtube/youtube.module"
 
@@ -24,6 +25,6 @@ coreContainer.bind(TYPES.CLIENT).toConstantValue(
 )
 coreContainer.bind(TYPES.REST).toConstantValue(new REST({ version: "9" }))
 coreContainer.bind(App).toSelf().inSingletonScope()
-coreContainer.load(discordModule, commandModule, youtubeModule)
+coreContainer.load(discordModule, commandModule, youtubeModule, guardModule)
 
 export { coreContainer }

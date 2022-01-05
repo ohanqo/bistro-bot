@@ -62,7 +62,7 @@ export default class ReminderCommand extends Command {
 
       await this.interaction.reply({
         ephemeral: isPrivate,
-        content: `Nouveau rappel: ${message} \n Date: ${parsedDate}`
+        content: `Nouveau rappel: ${message} \nDate: ${parsedDate}`
       })
     }
   }

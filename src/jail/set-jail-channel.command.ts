@@ -6,12 +6,12 @@ import { options } from "@/core/option/option.decorator"
 import { CommandInteraction } from "discord.js"
 import { inject, injectable } from "inversify"
 import OptionChannelIsVoiceGuard from "./guards/option-channel-is-voice.guard"
-import SenderIsAdminGuard from "./guards/sender-is-admin.guard"
+import SenderIsAdminGuard from "@/core/guard/common/sender-is-admin.guard"
 import JailManager from "./jail.manager"
 import ChannelOption from "./options/channel.option"
 
 @injectable()
-@command("set-channel", "Définissez le channel où les prisonniers seront déplacés.")
+@command("set-channel", "ADMIN | Définissez le channel où les prisonniers seront déplacés.")
 @options(ChannelOption)
 @guards(SenderIsAdminGuard, OptionChannelIsVoiceGuard)
 export default class SetJailChannelCommand extends Command {

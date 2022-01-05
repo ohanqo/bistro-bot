@@ -15,7 +15,6 @@ import MemberInJail from "./member-in-jail.model"
 import DurationOption from "./options/duration.option"
 import MemberOption from "./options/member.option"
 
-@injectable()
 @command("jail", "Déplace un membre en prison, l'empêchant de communiquer.")
 @options(MemberOption, DurationOption)
 @guards(TargetIsNonAdminGuard, TargetIsNotInJailGuard, SenderCanManageRolesGuard)

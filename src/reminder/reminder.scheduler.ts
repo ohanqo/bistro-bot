@@ -48,7 +48,6 @@ export default class ReminderScheduler {
       }
     } finally {
       this.logger.info(`[REMINDER] job with id ${reminder.id} soft deleted`)
-      this.logger.info("")
       await this.repository.softDelete(reminder.id)
     }
   }
