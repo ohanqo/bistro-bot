@@ -18,7 +18,6 @@ export default class Player {
   }
 
   public addToQueue(url: string) {
-    console.log("URL -> " + url)
     this.queue.push(url)
   }
 

@@ -1,3 +1,4 @@
+import { CommandInteraction } from "discord.js"
 import { injectable } from "inversify"
 import { coreContainer } from "../core.container"
 import Guard from "../guard/guard"
@@ -24,5 +25,13 @@ export default abstract class Command {
     }
 
     return true
+  }
+
+  protected getCommandOptions(interaction: CommandInteraction): any {
+    const options: { [key: string]: any } = {}
+    this.options.forEach((option) => {
+      options[option.name] = interaction.options.get(option.name, option.required.valueOf())?.value
+    })
+    return options
   }
 }

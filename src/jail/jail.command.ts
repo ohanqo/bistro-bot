@@ -1,7 +1,6 @@
 import { TYPES } from "@/core/app/app.types"
 import Command from "@/core/command/command"
 import { command } from "@/core/command/command.decorator"
-import "@/core/discord/discord.extensions"
 import { guards } from "@/core/guard/guard.decorator"
 import { options } from "@/core/option/option.decorator"
 import { CommandInteraction, GuildMember, Role, VoiceChannel } from "discord.js"

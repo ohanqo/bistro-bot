@@ -10,7 +10,6 @@ import TargetIsInJailGuard from "./guards/target-is-in-jail.guard"
 import JailState from "./jail.state"
 import MemberOptionalOption from "./options/member-optional.option"
 
-@injectable()
 @command("unjail", "Reset les membres en prison.")
 @options(MemberOptionalOption)
 @guards(TargetIsInJailGuard, SenderCanManageRolesGuard)

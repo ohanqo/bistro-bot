@@ -10,7 +10,6 @@ import SenderIsAdminGuard from "@/core/guard/common/sender-is-admin.guard"
 import JailManager from "./jail.manager"
 import ChannelOption from "./options/channel.option"
 
-@injectable()
 @command("set-channel", "ADMIN | Définissez le channel où les prisonniers seront déplacés.")
 @options(ChannelOption)
 @guards(SenderIsAdminGuard, OptionChannelIsVoiceGuard)

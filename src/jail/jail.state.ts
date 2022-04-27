@@ -1,4 +1,3 @@
-import "@/core/discord/discord.extensions"
 import { injectable } from "inversify"
 import MemberInJail from "./member-in-jail.model"
 

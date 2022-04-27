@@ -1,4 +1,3 @@
-import "@/core/app/app.extensions"
 import { TYPES } from "@/core/app/app.types"
 import Command from "@/core/command/command"
 import { command } from "@/core/command/command.decorator"
@@ -25,7 +24,7 @@ export default class PlayCommand extends Command {
   }
 
   async execute() {
-    const option = this.interaction.options.getString("titre")!
+    const option = this.interaction.options.getString("titre", true)
 
     let url = ""
     if (option.isYoutubeURL()) {

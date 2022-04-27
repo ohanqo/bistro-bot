@@ -1,23 +1,23 @@
-import { injectable } from "inversify";
-import { Result } from "./Result";
-import SearchResponse from "./search.response";
-import YoutubeService from "./youtube.service";
+import { inject, injectable } from "inversify"
+import { TYPES } from "../app/app.types"
+import Logger from "../logger/logger"
+import { Result } from "./Result"
+import SearchResponse from "./search.response"
+import YoutubeService from "./youtube.service"
 
 @injectable()
 export default class YoutubeRepository {
-  constructor(private service: YoutubeService) {}
+  constructor(private service: YoutubeService, @inject(TYPES.LOGGER) private logger: Logger) {}
 
   public async getFirstVideo(title: string): Promise<Result<SearchResponse>> {
     try {
-      const response = await this.service.getFirstVideo(title);
-      console.log("Response => " + JSON.stringify(response));
-      return Result.ok(response);
+      const response = await this.service.getFirstVideo(title)
+      return Result.ok(response)
     } catch (error: any) {
       if (error instanceof Error) {
-        console.log("|YoutubeRepository| " + error.stack);
+        this.logger.error("[YoutubeRepository] " + error.stack)
       }
-      return Result.fail(error?.message ?? "Unable to fetch youtube data.");
+      return Result.fail(error?.message ?? "Unable to fetch youtube data.")
     }
   }
 }
-

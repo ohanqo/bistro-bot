@@ -1,4 +1,5 @@
 import ReminderScheduler from "@/reminder/reminder.scheduler"
+import WatcherScheduler from "@/watcher/watcher.scheduler"
 import { inject, injectable } from "inversify"
 import DiscordClient from "../discord/discord.client"
 import { TYPES } from "./app.types"
@@ -8,7 +9,9 @@ export default class App {
   constructor(
     private discordClient: DiscordClient,
     @inject(TYPES.REMINDER_SCHEDULER)
-    private reminderScheduler: ReminderScheduler
+    private reminderScheduler: ReminderScheduler,
+    @inject(TYPES.WATCHER_SCHEDULER)
+    private watcherScheduler: WatcherScheduler
   ) {}
 
   public async startDiscord(token: string | undefined) {
@@ -19,5 +22,9 @@ export default class App {
 
   public async scheduleStoredReminders() {
     await this.reminderScheduler.scheduleStoredJobs()
+  }
+
+  public async scheduleStoredWatchers() {
+    await this.watcherScheduler.scheduleStoredJobs()
   }
 }

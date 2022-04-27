@@ -1,11 +1,15 @@
+import { Protocol } from "puppeteer"
+
 declare global {
   interface String {
     inQuoteContent(): String | undefined
     isYoutubeURL(): boolean
+    isURL(): boolean
+    extractCookies(): Protocol.Network.CookieParam[]
   }
 
   interface Number {
-    toMinutes(): number
+    toMilliseconds(): number
   }
 
   interface Date {
@@ -24,7 +28,24 @@ String.prototype.isYoutubeURL = function isYoutubeURL() {
   return this.startsWith("https://www.youtube.com")
 }
 
-Number.prototype.toMinutes = function (this: number) {
+String.prototype.isURL = function isURL() {
+  return /^(http|https):\/\//.test(this as string)
+}
+
+String.prototype.extractCookies = function extractCookies() {
+  return this.replace(" ", "")
+    .split(";")
+    .map((keyValue) => {
+      const cookie = keyValue.split("=")
+      return {
+        name: cookie[0],
+        value: cookie[1],
+        domain: "dealabs.com"
+      } as Protocol.Network.CookieParam
+    })
+}
+
+Number.prototype.toMilliseconds = function (this: number) {
   return this * 1_000 * 60
 }
 

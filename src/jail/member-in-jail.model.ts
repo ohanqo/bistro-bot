@@ -12,7 +12,7 @@ export default class MemberInJail {
   private timeout: NodeJS.Timeout | undefined
 
   public startTimeout() {
-    this.timeout = setTimeout(() => this.resetMemberStatus(), this.duration.toMinutes())
+    this.timeout = setTimeout(() => this.resetMemberStatus(), this.duration.toMilliseconds())
   }
 
   public stopTimeout() {

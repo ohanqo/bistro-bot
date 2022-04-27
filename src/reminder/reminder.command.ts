@@ -1,4 +1,3 @@
-import "@/core/app/app.extensions"
 import { TYPES } from "@/core/app/app.types"
 import Command from "@/core/command/command"
 import { command } from "@/core/command/command.decorator"
@@ -6,10 +5,9 @@ import { options } from "@/core/option/option.decorator"
 import * as chrono from "chrono-node"
 import { CommandInteraction, TextChannel } from "discord.js"
 import { inject } from "inversify"
-import { Repository } from "typeorm"
 import DateOption from "./options/date.option"
 import MessageOption from "./options/message.option"
-import PrivateOption from "./options/private.option"
+import PrivateOption from "../core/option/common/private.option"
 import ReminderEntity from "./reminder.entity"
 import ReminderScheduler from "./reminder.scheduler"
 
@@ -25,11 +23,6 @@ export default class ReminderCommand extends Command {
     super()
   }
 
-  /**
-   * TODO: save en db, récup l'id, start bree avec en param l'id
-   * dans le worker, recuperer les elements du reminder avec l'id
-   * checker si on peut se connecter au client discord (via le container ??)
-   */
   public async execute(): Promise<void> {
     const optionDate = this.interaction.options.getString(new DateOption().name) ?? ""
     const parsedDate = chrono.fr.parseDate(optionDate)

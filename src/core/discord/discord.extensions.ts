@@ -3,6 +3,8 @@ import {
   CreateRoleOptions,
   Guild,
   GuildMember,
+  InteractionReplyOptions,
+  MessagePayload,
   Role,
   TextChannel,
   VoiceChannel
@@ -63,4 +65,6 @@ Client.prototype.findMember = function (guildId: string, memberId: string) {
   return potentialGuild?.members.cache.find((member) => member.id === memberId)
 }
 
-export {}
+type ReplyOptions = string | MessagePayload | InteractionReplyOptions
+
+export { ReplyOptions }

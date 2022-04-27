@@ -19,7 +19,8 @@ export default winston.createLogger({
   transports: [
     new winston.transports.File({
       filename,
-      dirname: dirname(require?.main?.filename ?? "")
+      dirname: dirname(require?.main?.filename ?? ""),
+      maxFiles: 1
     }),
     new winston.transports.Console()
   ]

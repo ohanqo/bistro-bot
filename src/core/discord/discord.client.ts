@@ -38,16 +38,17 @@ export default class DiscordClient {
         }
       })
 
-      // console.log("commands: " + JSON.stringify(commands))
+      console.log("commands: " + JSON.stringify(commands))
 
       // await this.rest.setToken(token).put(Routes.applicationCommands(clientId), {
-      //   body: commands,
+      //   body: [],
       //   headers: { "Authorization": `Bot ${process.env.DISCORD_CLIENT_ID}` }
       // })
 
+      // Discord client id
       await this.rest
         .setToken(token)
-        .put(Routes.applicationGuildCommands(clientId, "770571106616606722"), {
+        .put(Routes.applicationGuildCommands(clientId, "288767835763638273"), {
           body: commands,
           headers: { "Authorization": `Bot ${process.env.DISCORD_CLIENT_ID}` }
         })
