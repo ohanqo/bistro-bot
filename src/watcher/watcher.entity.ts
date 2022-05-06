@@ -36,6 +36,15 @@ export default class WatcherEntity extends DiscordEntity {
   @Column({ type: "varchar", nullable: true, default: null })
   public color: string | null = null
 
+  @Column({ name: "is_watcher_list", type: "boolean" })
+  public isWatcherList = false
+
+  @Column({ name: "inner_title_query", type: "varchar", nullable: true, default: null })
+  public innerTitleQuery: string | null = null
+
+  @Column({ name: "inner_text_query", type: "varchar", nullable: true, default: null })
+  public innerTextQuery: string | null = null
+
   @DeleteDateColumn({ name: "deleted_at", type: "timestamp with time zone", nullable: true })
   public deletedDate = null
 
@@ -52,7 +61,10 @@ export default class WatcherEntity extends DiscordEntity {
     guildId: string
     channelId: string
     recurrence: string | null
-    cookie: string | null
+    cookie: string | null,
+    isWatcherList: boolean,
+    innerTitleQuery: string | null
+    innerTextQuery: string | null
   }): WatcherEntity {
     return Object.assign(new WatcherEntity(), properties)
   }

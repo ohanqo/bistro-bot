@@ -3,13 +3,13 @@ import { TYPES } from "@/core/app/app.types"
 import { coreContainer } from "@/core/core.container"
 import { CommandInteraction } from "discord.js"
 import { Page } from "puppeteer"
-import { CommandOptions } from "../create-watcher.command"
+import { CommandOptions } from "../create-watcher-list.command"
 import PipelineContext from "../pipeline.context"
 import WatcherEntity from "../watcher.entity"
 import WatcherScheduler from "../watcher.scheduler"
 import { Job } from "./job"
 
-export default class ScheduleWatcherJob implements Job {
+export default class ScheduleWatcherListJob implements Job {
   constructor(private commandOptions: CommandOptions, private interaction: CommandInteraction) {}
 
   async execute(_: Page, context: PipelineContext): Promise<any> {
@@ -27,9 +27,9 @@ export default class ScheduleWatcherJob implements Job {
       guildId: this.interaction.guild?.id ?? "",
       memberId: this.interaction.member?.user.id ?? "",
       elementTextContent: context.textContent ?? "",
-      isWatcherList: false,
-      innerTextQuery: null,
-      innerTitleQuery: null
+      isWatcherList: true,
+      innerTitleQuery: this.commandOptions["inner-title-query"],
+      innerTextQuery: this.commandOptions["inner-text-query"],
     })
 
     const scheduler = coreContainer.get<WatcherScheduler>(TYPES.WATCHER_SCHEDULER)

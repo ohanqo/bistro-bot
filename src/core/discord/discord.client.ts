@@ -48,7 +48,7 @@ export default class DiscordClient {
       // Discord client id
       await this.rest
         .setToken(token)
-        .put(Routes.applicationGuildCommands(clientId, "288767835763638273"), {
+        .put(Routes.applicationGuildCommands(clientId, "770571106616606722"), {
           body: commands,
           headers: { "Authorization": `Bot ${process.env.DISCORD_CLIENT_ID}` }
         })

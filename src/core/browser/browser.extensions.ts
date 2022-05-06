@@ -16,6 +16,19 @@ const resolveTextContentByQuery = async function (page: Page, url: string, query
   }, querySelector)) as Promise<string>
 }
 
+const resolveOuterHtmlListByQuery = async function (
+  page: Page,
+  url: string,
+  querySelector: string
+) {
+  await page.goto(url, { waitUntil: "networkidle0" })
+  await page.waitForSelector(querySelector, { timeout: 10_000 })
+  return await page.evaluate((qs) => {
+    const elements = document.querySelectorAll(qs)
+    return [...elements].map((element) => element.outerHTML as string)
+  }, querySelector)
+}
+
 const takeScreenshot = async function (
   page: Page,
   querySelector: string
@@ -32,4 +45,8 @@ const takeScreenshot = async function (
   return await element?.screenshot()
 }
 
-export { resolveTextContentByQuery, takeScreenshot }
+export {
+  resolveTextContentByQuery,
+  takeScreenshot,
+  resolveOuterHtmlListByQuery
+}

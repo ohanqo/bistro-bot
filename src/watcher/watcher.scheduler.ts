@@ -1,15 +1,12 @@
-import { appContainer } from "@/app.container"
 import { TYPES } from "@/core/app/app.types"
-import { resolveTextContentByQuery } from "@/core/browser/browser.extensions"
 import { coreContainer } from "@/core/core.container"
 import Logger from "@/core/logger/logger"
-import { Client } from "discord.js"
 import { inject, injectable } from "inversify"
 import { scheduleJob } from "node-schedule"
-import { Browser } from "puppeteer"
 import { Repository } from "typeorm"
 import CheckChangeJob from "./jobs/check-change.job"
 import NotifyOnChangeJob from "./jobs/notify-on-change.job"
+import PerformWatchOnListJob from "./jobs/perform-watch-list.job"
 import PerformWatchJob from "./jobs/perform-watch.job"
 import UpdateWatcherJob from "./jobs/update-watcher.job"
 import WatcherEntity from "./watcher.entity"
@@ -52,12 +49,14 @@ export default class WatcherScheduler {
   private async onJobStart(watcherId: number) {
     try {
       const watcher = (await this.repository.findOne(watcherId))!
-      const { id, url, elementQuerySelector, elementTextContent, cookie } = watcher
+      const { id, url, elementQuerySelector, elementTextContent, cookie, isWatcherList } = watcher
       const pipeline = coreContainer.get<WatcherPipeline>(TYPES.WATCHER_PIPELINE)
 
       await pipeline.runJobs({
         jobs: [
-          new PerformWatchJob(url, elementQuerySelector, cookie),
+          isWatcherList
+            ? new PerformWatchOnListJob(url, elementQuerySelector, cookie)
+            : new PerformWatchJob(url, elementQuerySelector, cookie),
           new CheckChangeJob(id, elementTextContent),
           new UpdateWatcherJob(id),
           new NotifyOnChangeJob(watcher)
