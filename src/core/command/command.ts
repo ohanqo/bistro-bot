@@ -1,7 +1,9 @@
 import { CommandInteraction } from "discord.js"
-import { injectable } from "inversify"
+import { inject, injectable } from "inversify"
+import { TYPES } from "../app/app.types"
 import { coreContainer } from "../core.container"
 import Guard from "../guard/guard"
+import Logger from "../logger/logger"
 import Option from "../option/option"
 
 @injectable()
@@ -10,6 +12,12 @@ export default abstract class Command {
   description: string = "undefined"
   options: Option[] = []
   guards: (new () => Guard)[] = []
+
+  protected logger: Logger
+
+  constructor() {
+    this.logger = coreContainer.get<Logger>(TYPES.LOGGER)
+  }
 
   abstract execute(): Promise<void>
 

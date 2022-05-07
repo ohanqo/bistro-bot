@@ -16,8 +16,6 @@ export default class LoggerCommand extends Command {
   constructor(
     @inject(TYPES.INTERACTION)
     private interaction: CommandInteraction,
-    @inject(TYPES.LOGGER)
-    private logger: Logger
   ) {
     super()
   }

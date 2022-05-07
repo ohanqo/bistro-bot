@@ -2,7 +2,7 @@ import { TYPES } from "@/core/app/app.types"
 import { coreContainer } from "@/core/core.container"
 import Logger from "@/core/logger/logger"
 import { inject, injectable } from "inversify"
-import { scheduleJob } from "node-schedule"
+import { Job, scheduleJob, gracefulShutdown } from "node-schedule"
 import { Repository } from "typeorm"
 import CheckChangeJob from "./jobs/check-change.job"
 import NotifyOnChangeJob from "./jobs/notify-on-change.job"
@@ -16,7 +16,8 @@ import WatcherPipeline from "./watcher.pipeline"
 export default class WatcherScheduler {
   constructor(
     @inject(TYPES.LOGGER) private logger: Logger,
-    @inject(TYPES.WATCHER_REPO) private repository: Repository<WatcherEntity>
+    @inject(TYPES.WATCHER_REPO) private repository: Repository<WatcherEntity>,
+    private jobMap = new Map<number, Job>()
   ) {}
 
   public async scheduleNewJob(watcher: WatcherEntity) {
@@ -29,15 +30,22 @@ export default class WatcherScheduler {
     watchers.forEach((watcher) => this.scheduleJob(watcher))
   }
 
+  public async refreshAndRescheduleJobs() {
+    await gracefulShutdown()
+    await this.scheduleStoredJobs()
+  }
+
   private async scheduleJob(watcherEntity: WatcherEntity) {
     this.logger.info(`[WATCHER] schedule job with id ${watcherEntity.id}`)
 
-    scheduleJob(
+    const job = scheduleJob(
       watcherEntity.recurrence,
       function (watcherId: number, self: WatcherScheduler) {
         self.onJobStart(watcherId)
       }.bind(null, watcherEntity.id, this)
     )
+
+    this.jobMap.set(watcherEntity.id, job)
   }
 
   /**
@@ -48,7 +56,13 @@ export default class WatcherScheduler {
    */
   private async onJobStart(watcherId: number) {
     try {
-      const watcher = (await this.repository.findOne(watcherId))!
+      const watcher = await this.repository.findOne(watcherId)
+
+      if (watcher == null) {
+        this.clearJobSchedule(watcherId)
+        return
+      }
+
       const { id, url, elementQuerySelector, elementTextContent, cookie, isWatcherList } = watcher
       const pipeline = coreContainer.get<WatcherPipeline>(TYPES.WATCHER_PIPELINE)
 
@@ -68,6 +82,15 @@ export default class WatcherScheduler {
       if (error instanceof Error) {
         this.logger.error(error.message)
       }
+    }
+  }
+
+  private clearJobSchedule(watcherId: number) {
+    const job = this.jobMap.get(watcherId)
+
+    if (job !== undefined) {
+      this.logger.info(`[WATCHER] clear job schedule for watcher ${watcherId}`)
+      job.cancel()
     }
   }
 }

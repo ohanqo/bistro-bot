@@ -14,7 +14,6 @@ import PipelineContext from "../pipeline.context"
 import WatcherEntity from "../watcher.entity"
 import { Job } from "./job"
 import * as cheerio from "cheerio"
-import { html } from "cheerio/lib/static"
 
 export default class NotifyOnChangeJob implements Job {
   constructor(

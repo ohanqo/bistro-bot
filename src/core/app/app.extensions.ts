@@ -16,6 +16,10 @@ declare global {
     isInPast(): boolean
   }
 
+  interface Array<T> {
+    chunk(size: number): Array<Array<T>>
+  }
+
   function delay(timeInMs: number): Promise<void>
 }
 
@@ -51,6 +55,12 @@ Number.prototype.toMilliseconds = function (this: number) {
 
 Date.prototype.isInPast = function isInPast() {
   return this < new Date()
+}
+
+Array.prototype.chunk = function chunck(size: number) {
+  return Array.from({ length: Math.ceil(this.length / size) }, (v, i) =>
+    this.slice(i * size, i * size + size)
+  )
 }
 
 global.delay = function (timeInMs: number): Promise<void> {
