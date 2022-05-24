@@ -5,12 +5,20 @@ import { jailModule } from "./jail/jail.module"
 import { jukeboxModule } from "./jukebox/jukebox.module"
 import { loggerModule } from "./logger/logger.module"
 import { reminderModule } from "./reminder/reminder.module"
+import { statusModule } from "./status/status.module"
 import { watcherModule } from "./watcher/watcher.module"
 
 const appContainer: Promise<Container> = new Promise(async (resolve) => {
   const container = new Container()
   await container.loadAsync(databaseModule, browserModule)
-  container.load(jailModule, jukeboxModule, reminderModule, loggerModule, watcherModule)
+  container.load(
+    jailModule,
+    jukeboxModule,
+    reminderModule,
+    loggerModule,
+    watcherModule,
+    statusModule
+  )
   resolve(container)
 })
 
