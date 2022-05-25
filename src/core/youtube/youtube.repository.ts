@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 import { TYPES } from "../app/app.types"
 import Logger from "../logger/logger"
-import { Result } from "./Result"
+import { Result } from "./result"
 import SearchResponse from "./search.response"
 import YoutubeService from "./youtube.service"
 
