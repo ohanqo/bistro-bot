@@ -16,7 +16,7 @@ const databaseModule = new AsyncContainerModule(async (bind: interfaces.Bind) =>
         entities: ["dist/**/*.entity.js"],
         migrations: ["dist/core/app/migrations/*.js"],
         migrationsRun: true,
-        ssl: false
+        ssl: true
       })
 
   const jailRepository = connection.getRepository(JailEntity)
