@@ -38,7 +38,7 @@ export default class DiscordClient {
         }
       })
 
-      console.log("commands: " + JSON.stringify(commands))
+      // console.log("commands: " + JSON.stringify(commands))
 
       // await this.rest.setToken(token).put(Routes.applicationCommands(clientId), {
       //   body: [],
@@ -48,7 +48,7 @@ export default class DiscordClient {
       // Discord client id
       await this.rest
         .setToken(token)
-        .put(Routes.applicationGuildCommands(clientId, "770571106616606722"), {
+        .put(Routes.applicationGuildCommands(clientId, `${process.env.DISCORD_GUILD_ID}`), {
           body: commands,
           headers: { "Authorization": `Bot ${process.env.DISCORD_CLIENT_ID}` }
         })
