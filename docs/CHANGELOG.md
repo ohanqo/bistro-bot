@@ -1,3 +1,21 @@
+## [2.0.0](https://github.com/ohanqo/bistro-bot/compare/v1.3.4...v2.0.0) (2022-05-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* project rewriting with slash commands
+
+### :sparkles: Features
+
+* **jail:** adds the command to set the jail channel ([38c7b80](https://github.com/ohanqo/bistro-bot/commit/38c7b80f68c13008adc69ae368b215c4a1b2c5d9))
+* **logger:** adds basic logger command ([f7a35b1](https://github.com/ohanqo/bistro-bot/commit/f7a35b19418f9e366496b8d4d4beb0bbf1b9d3c8))
+* **reminder:** adds reminder command ([934f67d](https://github.com/ohanqo/bistro-bot/commit/934f67d694a9ec70839c388bc489a6931b229979))
+* **status:** add bot status command ([0eff1ba](https://github.com/ohanqo/bistro-bot/commit/0eff1ba2ff3112deada8416765121dcfed124245))
+* use slash commands ([beb8dad](https://github.com/ohanqo/bistro-bot/commit/beb8dadd696d0b8a7b70552d78a7ed134e25db2c))
+* **watcher:** add list, refresh and delete command ([25c494c](https://github.com/ohanqo/bistro-bot/commit/25c494cd8e7dfe42c09b1d8b4c405db46556ca19))
+* **watcher:** add watcher for list ([a70d3b6](https://github.com/ohanqo/bistro-bot/commit/a70d3b67271dcf67cbb00b967da602567e94d03a))
+* **watcher:** add watcher scheduler ([c2d2b06](https://github.com/ohanqo/bistro-bot/commit/c2d2b06ac98af6fb6c0cdd6debfcadff873efdf6))
+
 ### [1.3.4](https://github.com/ohanqo/bistro-bot/compare/v1.3.3...v1.3.4) (2021-03-15)
 
 

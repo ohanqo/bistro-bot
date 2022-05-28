@@ -1,6 +1,6 @@
 {
   "name": "bistro-bot",
-  "version": "1.3.4",
+  "version": "2.0.0",
   "main": "index.js",
   "license": "MIT",
   "private": "true",
